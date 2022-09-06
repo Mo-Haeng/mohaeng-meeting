@@ -218,5 +218,9 @@ gradle-app.setting
 
 
 application*.yml
+!application.yml
+!application-local.yml
+!application-local-jwt.yml
+!application-prod*.yml
 
 
