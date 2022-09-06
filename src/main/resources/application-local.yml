@@ -1,5 +1,5 @@
 server:
-  port: 9999 # Using random port
+  port: 9998 # Using random port
 
 eureka:
   client:
