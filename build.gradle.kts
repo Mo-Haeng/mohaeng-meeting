@@ -1,0 +1,91 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+	id("org.springframework.boot") version "2.7.3"
+	id("io.spring.dependency-management") version "1.0.13.RELEASE"
+	kotlin("jvm") version "1.6.21"
+	kotlin("plugin.spring") version "1.6.21"
+	kotlin("plugin.jpa") version "1.6.21"
+
+	// QUERY DSL
+	kotlin("kapt") version "1.7.10"
+}
+
+group = "com.mohang"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+repositories {
+	mavenCentral()
+}
+
+extra["springCloudVersion"] = "2021.0.3"
+
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
+}
+
+noArg {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
+}
+
+dependencies {
+
+	// Eureka Client
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
+	// Spring
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// Kotlin
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+	// Database
+	runtimeOnly("com.h2database:h2")
+	runtimeOnly("mysql:mysql-connector-java")
+
+	// Test
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.mockk:mockk:1.12.1")
+	testImplementation("io.strikt:strikt-core:0.34.0")
+	testImplementation("com.ninja-squad:springmockk:3.1.1")
+
+	// Annotation Processing
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+	// Logging
+	implementation("io.github.microutils:kotlin-logging:1.12.5")
+
+	// JWT
+	implementation("com.auth0:java-jwt:4.0.0")
+
+	// QUERY DSL
+	val querydslVersion = "5.0.0" //querydsl
+	implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+	kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+	}
+}
+
+tasks.withType<KotlinCompile> {
+	kotlinOptions {
+		freeCompilerArgs = listOf("-Xjsr305=strict")
+		jvmTarget = "17"
+	}
+}
+
+tasks.withType<Test> {
+	useJUnitPlatform()
+}
