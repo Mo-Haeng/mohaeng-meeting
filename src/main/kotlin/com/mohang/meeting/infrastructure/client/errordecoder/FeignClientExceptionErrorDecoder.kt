@@ -13,15 +13,18 @@ import feign.codec.StringDecoder
 class FeignClientExceptionErrorDecoder(
 
     private val objectMapper: ObjectMapper,
+
 ) : ErrorDecoder {
 
     private val stringDecoder: StringDecoder = StringDecoder()
+    private val errorDecoder: ErrorDecoder = ErrorDecoder.Default()
 
     override fun decode(methodKey: String, response: Response): Exception {
 
         return response.body()?.let {
 
             val message = stringDecoder.decode(response, String::class.java).toString()
+
             val errorResponse = objectMapper.readValue(message, ExceptionResponse::class.java)
 
             FeignClientException(errorResponse)

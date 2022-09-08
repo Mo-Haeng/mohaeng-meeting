@@ -4,7 +4,7 @@ package com.mohang.meeting.domain.meetingrole
  * Created by ShinD on 2022/09/07.
  */
 import com.mohang.meeting.configuration.jpa.BaseEntity
-import com.mohang.meeting.domain.enums.MeetingAuthority
+import com.mohang.meeting.domain.meetingrole.enums.MeetingAuthority
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType.STRING
@@ -22,5 +22,15 @@ class MeetingRole( // 모임 별로 정한 역할
 
     @Column(nullable = false)
     val meetingId: Long, // 어떤 모임에서 정해진 규칙인지
+
 ) : BaseEntity() {
+
+    companion object {
+
+        // Default Role 정의
+        fun representativeRole(meetingId: Long) =
+            MeetingRole(name = "대표", authority = MeetingAuthority.REPRESENTATIVE, meetingId = meetingId)
+        fun basicRole(meetingId: Long) =
+           MeetingRole(name = "일반", authority = MeetingAuthority.BASIC, meetingId = meetingId)
+    }
 }

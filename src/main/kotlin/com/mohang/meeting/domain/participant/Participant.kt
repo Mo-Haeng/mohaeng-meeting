@@ -23,6 +23,7 @@ class Participant( // 모임에 참여한 참가자
 
     @Column(nullable = false)
     private val meetingRoleId: Long, // 모임에서의 역할 ID, 해당 회원이 모임에서 어떤 역할인지
+
 ) : BaseEntity() {
 
 }

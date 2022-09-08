@@ -32,15 +32,9 @@ class MemberClientConfiguration {
     }
 
     @Bean
-    fun errorDecoder(): ErrorDecoder {
-        return feignClientExceptionErrorDecoder()
-    }
-
-
-    @Bean
-    fun feignClientExceptionErrorDecoder(
-        objectMapper: ObjectMapper? = null
-    ): FeignClientExceptionErrorDecoder {
+    fun errorDecoder(
+        objectMapper: ObjectMapper? = null,
+    ): ErrorDecoder {
         checkNotNull(objectMapper) { "objectMapper is null" }
         return FeignClientExceptionErrorDecoder(objectMapper)
     }

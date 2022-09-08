@@ -1,6 +1,6 @@
 package com.mohang.meeting.infrastructure.persistence
 
-import com.mohang.meeting.domain.enums.MeetingAuthority
+import com.mohang.meeting.domain.meetingrole.enums.MeetingAuthority
 import com.mohang.meeting.domain.meetingrole.MeetingRole
 import com.mohang.meeting.fixture.MeetingFixture
 import com.mohang.meeting.infrastructure.persistence.meeting.MeetingRepository

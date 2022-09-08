@@ -19,12 +19,6 @@ class Meeting(
 
     private val capacity: Int, // 모임 최대 인원 (-1은 제한 없음을 의미한다.)
 
-
-    /**
-     * 모임 참가자와는 동일한 생명주기를 갖지 않으므로
-     * 다른 Aggregate라고 판단하였음
-     */
-
 ) : BaseEntity() {
 
 }

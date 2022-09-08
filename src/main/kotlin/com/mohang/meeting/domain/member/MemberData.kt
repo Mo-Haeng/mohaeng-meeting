@@ -26,6 +26,7 @@ data class MemberData(
     var createdAt: String, // 생성 시간
 
     var modifiedAt: String, // 최종 수정 시간
+
 )
 
 enum class Role {

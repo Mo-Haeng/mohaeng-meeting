@@ -15,18 +15,19 @@ import javax.persistence.Table
 class ApplyForm(
 
     @Column(nullable = false)
-    private val meetingId: Long, // 어떤 모임에서 정해진 규칙인지
+    val meetingId: Long, // 어떤 모임에서 정해진 규칙인지
 
-    private val name: String, // 신청 양식 이름
+    val name: String, // 신청 양식 이름
 
-    private val isCurrentUsed: Boolean = true, // 현재 사용중인지 여부, 단 하나만 현재 사용중일 수 있으므로, 유일한 true값을 가진다.
+    val isCurrentUsed: Boolean = true, // 현재 사용중인지 여부, 단 하나만 현재 사용중일 수 있으므로, 유일한 true값을 가진다.
 
     @OneToMany(mappedBy = "applyForm", orphanRemoval = true, cascade = [ALL])
-    private val applyFormFields: MutableList<ApplyFormField> = mutableListOf(),
+    val applyFormFields: MutableList<ApplyFormField> = mutableListOf(), // 가입 신청 시 작성해야 할 필드 양식들
 
-    ) : BaseEntity() {
+) : BaseEntity() {
 
     fun addAllFields(applyFormFields: List<ApplyFormField>) {
-       this.applyFormFields.addAll(applyFormFields)
+        applyFormFields.forEach{it.confirmApplyForm(this)}
+        this.applyFormFields.addAll(applyFormFields)
     }
 }

@@ -1,4 +1,4 @@
-package com.mohang.meeting.domain.enums
+package com.mohang.meeting.domain.meetingrole.enums
 
 /**
  * Created by ShinD on 2022/09/07.

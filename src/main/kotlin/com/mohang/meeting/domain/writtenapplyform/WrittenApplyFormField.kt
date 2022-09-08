@@ -19,5 +19,6 @@ class WrittenApplyFormField(
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "written_apply_form_id")
     private val writtenApplyForm: WrittenApplyForm,
+
 ) : BaseEntity() {
 }

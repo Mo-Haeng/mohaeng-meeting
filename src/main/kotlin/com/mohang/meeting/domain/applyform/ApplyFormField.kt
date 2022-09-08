@@ -14,10 +14,15 @@ import javax.persistence.Table
 @Table(name = "APPLY_FORM_FIELD")
 class ApplyFormField(
 
-    private val name: String, // 필드 이름
+    val name: String, // 필드 이름
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "apply_form_id", nullable = false)
-    private val applyForm: ApplyForm? = null, // 가입 신청서 양식
-) : BaseEntity(){
+    var applyForm: ApplyForm? = null, // 가입 신청서 양식
+
+) : BaseEntity() {
+
+    fun confirmApplyForm(applyForm: ApplyForm) {
+       this.applyForm = applyForm
+    }
 }

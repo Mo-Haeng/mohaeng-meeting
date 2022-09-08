@@ -17,5 +17,6 @@ class WrittenApplyForm(
 
     @OneToMany(mappedBy = "writtenApplyForm", orphanRemoval = true, cascade = [ALL])
     private val writtenApplyFormFields: MutableList<WrittenApplyFormField> = mutableListOf(),
+
 ) : BaseEntity() {
 }
