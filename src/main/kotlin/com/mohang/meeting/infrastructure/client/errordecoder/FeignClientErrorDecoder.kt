@@ -10,7 +10,7 @@ import feign.codec.StringDecoder
 /**
  * Created by ShinD on 2022/09/08.
  */
-class FeignClientExceptionErrorDecoder(
+class FeignClientErrorDecoder(
 
     private val objectMapper: ObjectMapper,
 

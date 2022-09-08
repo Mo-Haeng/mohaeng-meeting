@@ -1,7 +1,7 @@
 package com.mohang.meeting.configuration.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.mohang.meeting.infrastructure.client.errordecoder.FeignClientExceptionErrorDecoder
+import com.mohang.meeting.infrastructure.client.errordecoder.FeignClientErrorDecoder
 import feign.Retryer
 import feign.codec.ErrorDecoder
 import org.springframework.cloud.openfeign.FeignFormatterRegistrar
@@ -36,6 +36,6 @@ class MemberClientConfiguration {
         objectMapper: ObjectMapper? = null,
     ): ErrorDecoder {
         checkNotNull(objectMapper) { "objectMapper is null" }
-        return FeignClientExceptionErrorDecoder(objectMapper)
+        return FeignClientErrorDecoder(objectMapper)
     }
 }
