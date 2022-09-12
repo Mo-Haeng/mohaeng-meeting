@@ -33,7 +33,7 @@ class CreateMeetingFacade(
     fun create(
         memberId: Long,
         createMeetingDto: CreateMeetingDto,
-        createApplyFormDto: CreateApplyFormDto,
+        createApplyFormDto: CreateApplyFormDto?,
         createParticipantDto: CreateParticipantDto,
     ): Long {
 
@@ -55,11 +55,13 @@ class CreateMeetingFacade(
                 meetingRoleId = representativeRoleId
             )
 
-            // 가입 신청서 양식 저장
-            createApplyFormUseCase.command(
-                createApplyFormDto = createApplyFormDto,
-                meetingId = meetingId
-            )
+            // 가입 신청서 양식이 존재하는 경우 저장
+            createApplyFormDto?.let {
+                createApplyFormUseCase.command(
+                    createApplyFormDto = it,
+                    meetingId = meetingId
+                )
+            }
 
             meetingId // return
         }

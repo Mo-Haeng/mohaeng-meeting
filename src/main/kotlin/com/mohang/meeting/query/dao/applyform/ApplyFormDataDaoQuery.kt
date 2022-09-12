@@ -5,7 +5,6 @@ import com.mohang.meeting.domain.applyform.QApplyFormField.applyFormField
 import com.mohang.meeting.query.data.applyform.ApplyFormData
 import com.mohang.meeting.query.data.applyform.QApplyFormData
 import com.mohang.meeting.query.data.applyform.QApplyFormFieldData
-import com.mohang.meeting.query.exception.NotFoundApplyFormException
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -37,7 +36,8 @@ class ApplyFormDataDaoQuery(
                     .and(applyForm.isCurrentUsed.isTrue)
             )
             .fetchOne()
-            ?: throw NotFoundApplyFormException()
+            // 만약 가입 신청서가 없는 경우 존재하지 않음을 표시하는 데이터를 반환하고 종료
+            ?: return ApplyFormData(isExist = false)
 
         val applyFormFieldDatas = query.select(
             QApplyFormFieldData(
