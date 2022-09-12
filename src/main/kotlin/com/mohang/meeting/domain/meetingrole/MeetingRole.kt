@@ -23,6 +23,9 @@ class MeetingRole( // 모임 별로 정한 역할
     @Column(nullable = false)
     val meetingId: Long, // 어떤 모임에서 정해진 규칙인지
 
+
+    val isParticipantDefault: Boolean = false,// 가입 신청 시 기본적으로 적용되는 역할인지에 대한 여부, 오직 하나만이 default 옵션이 될 수 있다.
+
 ) : BaseEntity() {
 
     companion object {
@@ -31,6 +34,6 @@ class MeetingRole( // 모임 별로 정한 역할
         fun representativeRole(meetingId: Long) =
             MeetingRole(name = "대표", authority = MeetingAuthority.REPRESENTATIVE, meetingId = meetingId)
         fun basicRole(meetingId: Long) =
-           MeetingRole(name = "일반", authority = MeetingAuthority.BASIC, meetingId = meetingId)
+           MeetingRole(name = "일반", authority = MeetingAuthority.BASIC, meetingId = meetingId, isParticipantDefault = true) // 기본 옵션
     }
 }
