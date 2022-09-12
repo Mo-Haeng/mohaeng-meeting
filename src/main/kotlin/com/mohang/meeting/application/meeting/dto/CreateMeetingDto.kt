@@ -11,7 +11,7 @@ data class CreateMeetingDto(
 
     val description: String,
 
-    val capacity: Int = -1, //제한 없음 설정시 -1
+    val capacity: Int,
 ) {
 
     fun toEntity(): Meeting {

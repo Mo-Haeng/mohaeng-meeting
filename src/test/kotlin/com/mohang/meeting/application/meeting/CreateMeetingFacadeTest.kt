@@ -1,8 +1,7 @@
 package com.mohang.meeting.application.meeting
 
 import com.mohang.meeting.application.applyform.CreateApplyFormUseCase
-import com.mohang.meeting.application.meeting.dto.ApplyFormFieldDto
-import com.mohang.meeting.application.meeting.exception.NotAuthorityCreateMeeting
+import com.mohang.meeting.application.meeting.exception.NoAuthorityCreateMeeting
 import com.mohang.meeting.application.meetingrole.CreateMeetingRoleUseCase
 import com.mohang.meeting.application.member.TakeMemberDataUseCase
 import com.mohang.meeting.application.participant.RegisterParticipantUseCase
@@ -10,25 +9,16 @@ import com.mohang.meeting.configuration.client.exception.FeignClientException
 import com.mohang.meeting.configuration.exception.ExceptionResponse
 import com.mohang.meeting.domain.meetingrole.MeetingRole
 import com.mohang.meeting.domain.meetingrole.enums.MeetingAuthority
-import com.mohang.meeting.domain.member.MemberServiceClient
-import com.mohang.meeting.domain.participant.Participant
-import com.mohang.meeting.fixture.*
 import com.mohang.meeting.fixture.ApplyFormFixture.createApplyFormDto
 import com.mohang.meeting.fixture.MeetingFixture.createMeetingDto
 import com.mohang.meeting.fixture.MemberDataFixture.memberData
 import com.mohang.meeting.fixture.ParticipantFixture.participant
 import com.mohang.meeting.infrastructure.client.member.model.Role
 import com.mohang.meeting.infrastructure.eventproducer.EventProducer
-import com.mohang.meeting.infrastructure.persistence.applyform.ApplyFormRepository
-import com.mohang.meeting.infrastructure.persistence.meeting.MeetingRepository
-import com.mohang.meeting.infrastructure.persistence.meetingrole.MeetingRoleRepository
-import com.mohang.meeting.infrastructure.persistence.participant.ParticipantRepository
 import com.mohang.meeting.mock.MockTransactionTemplate
 import io.mockk.*
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.test.util.ReflectionTestUtils
-import org.springframework.transaction.support.TransactionTemplate
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
@@ -161,7 +151,7 @@ internal class CreateMeetingFacadeTet {
         every { takeMemberDataUseCase.command(memberId) } returns memberData
 
         //when, then
-        expectThrows<NotAuthorityCreateMeeting> {
+        expectThrows<NoAuthorityCreateMeeting> {
             createMeetingFacade.create(
                 memberId = memberId,
                 createMeetingDto = createMeetingDto,
