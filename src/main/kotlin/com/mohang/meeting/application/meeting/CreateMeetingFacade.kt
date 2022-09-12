@@ -3,13 +3,12 @@ package com.mohang.meeting.application.meeting
 import com.mohang.meeting.application.applyform.CreateApplyFormUseCase
 import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
 import com.mohang.meeting.application.meeting.dto.CreateMeetingDto
-import com.mohang.meeting.application.meeting.exception.NotAuthorityCreateMeeting
+import com.mohang.meeting.application.meeting.exception.NoAuthorityCreateMeeting
 import com.mohang.meeting.application.meetingrole.CreateMeetingRoleUseCase
 import com.mohang.meeting.application.member.TakeMemberDataUseCase
 import com.mohang.meeting.application.participant.RegisterParticipantUseCase
+import com.mohang.meeting.application.util.MemberUtil.Companion.ifBlacklistThrowException
 import com.mohang.meeting.domain.meetingrole.MeetingRole
-import com.mohang.meeting.infrastructure.client.member.model.MemberData
-import com.mohang.meeting.infrastructure.client.member.model.Role.Companion.isBlack
 import com.mohang.meeting.infrastructure.eventproducer.EventProducer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
@@ -45,7 +44,7 @@ class CreateMeetingFacade(
         val memberData = takeMemberDataUseCase.command(memberId)
 
         // 블랙리스트라면 예외 발생
-        checkNotBlackList(memberData)
+        ifBlacklistThrowException(memberData, NoAuthorityCreateMeeting())
 
         val meetingId = transaction.execute {
             // 미팅 저장
@@ -70,10 +69,6 @@ class CreateMeetingFacade(
         eventProducer.send("create meeting event", meetingId)
 
         return meetingId
-    }
-
-    private fun checkNotBlackList(memberData: MemberData) {
-        if (isBlack(memberData.role)) throw NotAuthorityCreateMeeting()
     }
 
     /**
