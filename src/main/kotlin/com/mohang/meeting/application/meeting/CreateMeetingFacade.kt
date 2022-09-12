@@ -3,10 +3,9 @@ package com.mohang.meeting.application.meeting
 import com.mohang.meeting.application.applyform.CreateApplyFormUseCase
 import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
 import com.mohang.meeting.application.meeting.dto.CreateMeetingDto
-import com.mohang.meeting.application.meetingrole.CreateMeetingRoleUseCase
+import com.mohang.meeting.application.meetingrole.CreateDefaultMeetingRoleUseCase
 import com.mohang.meeting.application.participant.RegisterParticipantUseCase
 import com.mohang.meeting.application.participant.dto.CreateParticipantDto
-import com.mohang.meeting.domain.meetingrole.MeetingRole
 import com.mohang.meeting.infrastructure.eventproducer.EventProducer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
@@ -19,7 +18,7 @@ class CreateMeetingFacade(
 
     private val createMeetingUseCase: CreateMeetingUseCase,
 
-    private val createMeetingRoleUseCase: CreateMeetingRoleUseCase,
+    private val createDefaultMeetingRoleUseCase: CreateDefaultMeetingRoleUseCase,
 
     private val registerParticipantUseCase: RegisterParticipantUseCase,
 
@@ -44,8 +43,8 @@ class CreateMeetingFacade(
             val meetingId = createMeetingUseCase.command(createMeetingDto)
 
             // 모임의 대표 역할과 일반 회원 역할 설정
-            val representativeRoleId =
-                saveDefaultRoleAndReturnRepresentativeRoleId(meetingId)
+            val representativeRoleId = createDefaultMeetingRoleUseCase
+                                        .createAndReturnRepresentativeRoleId(meetingId)
 
             // 신청 회원을 모임 참가자(대표)로 설정
             registerParticipantUseCase.command(
@@ -76,18 +75,5 @@ class CreateMeetingFacade(
         )
 
         return meetingId
-    }
-
-
-
-    /**
-     * 대표와 일반 회원 역할을 설정하고 저정함
-     */
-    private fun saveDefaultRoleAndReturnRepresentativeRoleId(meetingId: Long): Long {
-
-        val representativeRole = MeetingRole.representativeRole(meetingId)
-        val basicRole = MeetingRole.basicRole(meetingId)
-
-        return createMeetingRoleUseCase.command(listOf(representativeRole, basicRole))[0].id!!
     }
 }
