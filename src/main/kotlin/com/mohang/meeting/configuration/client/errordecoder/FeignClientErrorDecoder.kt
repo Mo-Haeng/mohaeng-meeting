@@ -1,15 +1,15 @@
-package com.mohang.meeting.infrastructure.client.errordecoder
+package com.mohang.meeting.configuration.client.errordecoder
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.mohang.meeting.configuration.client.exception.FeignClientException
 import com.mohang.meeting.configuration.exception.ExceptionResponse
 import feign.Response
 import feign.codec.ErrorDecoder
 import feign.codec.StringDecoder
+import mu.KotlinLogging
 
-/**
- * Created by ShinD on 2022/09/08.
- */
+
 class FeignClientErrorDecoder(
 
     private val objectMapper: ObjectMapper,
@@ -17,7 +17,7 @@ class FeignClientErrorDecoder(
 ) : ErrorDecoder {
 
     private val stringDecoder: StringDecoder = StringDecoder()
-    private val errorDecoder: ErrorDecoder = ErrorDecoder.Default()
+    private val log = KotlinLogging.logger {  }
 
     override fun decode(methodKey: String, response: Response): Exception {
 
@@ -25,9 +25,13 @@ class FeignClientErrorDecoder(
 
             val message = stringDecoder.decode(response, String::class.java).toString()
 
-            val errorResponse = objectMapper.readValue(message, ExceptionResponse::class.java)
-
-            FeignClientException(errorResponse)
+            try {
+                val errorResponse = objectMapper.readValue(message, ExceptionResponse::class.java)
+                FeignClientException(errorResponse)
+            } catch (e: JsonParseException) {
+                log.error { message }
+                FeignClientException(ExceptionResponse(code = 9999, message = "서비스에 장애가 있어 요청을 수행할 수 없습니다."))
+            }
         }!!
     }
 }

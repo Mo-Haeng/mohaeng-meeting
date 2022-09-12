@@ -1,7 +1,7 @@
 package com.mohang.meeting.application.participant
 
+import com.mohang.meeting.application.participant.dto.CreateParticipantDto
 import com.mohang.meeting.domain.participant.Participant
-import com.mohang.meeting.infrastructure.client.member.model.MemberData
 import com.mohang.meeting.infrastructure.persistence.participant.ParticipantRepository
 import org.springframework.stereotype.Service
 
@@ -15,10 +15,22 @@ class RegisterParticipantUseCase(
 
 ) {
 
-    fun command(memberData: MemberData, meetingId: Long, meetingRoleId: Long) =
-        with(memberData) {
-            participantRepository.save(
-                Participant(memberId = id, nickname = nickname, profileImagePath = profileImagePath, meetingId = meetingId, meetingRoleId = meetingRoleId)
-            )
-        }
+    fun command(
+        memberId: Long,
+        createParticipantDto: CreateParticipantDto,
+        meetingId: Long,
+        meetingRoleId: Long,
+    ): Long  {
+
+        // 참가자 Entity 생성
+        val participant = Participant(
+            memberId = memberId, // 회원 ID
+            nickname = createParticipantDto.nickname, // 모임에서 사용할 별명
+            profileImagePath = createParticipantDto.profileImagePath, // 모임에서 사용할 프사 url
+            meetingId = meetingId, // 모임 ID
+            meetingRoleId = meetingRoleId, // 모임에서 담당할 역할에 대한 ID
+        )
+
+        return participantRepository.save(participant).id!!
+    }
 }

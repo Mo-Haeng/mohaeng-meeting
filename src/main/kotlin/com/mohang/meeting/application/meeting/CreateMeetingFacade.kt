@@ -3,11 +3,9 @@ package com.mohang.meeting.application.meeting
 import com.mohang.meeting.application.applyform.CreateApplyFormUseCase
 import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
 import com.mohang.meeting.application.meeting.dto.CreateMeetingDto
-import com.mohang.meeting.application.meeting.exception.NoAuthorityCreateMeeting
 import com.mohang.meeting.application.meetingrole.CreateMeetingRoleUseCase
-import com.mohang.meeting.application.member.TakeMemberDataUseCase
 import com.mohang.meeting.application.participant.RegisterParticipantUseCase
-import com.mohang.meeting.application.util.MemberUtil.Companion.ifBlacklistThrowException
+import com.mohang.meeting.application.participant.dto.CreateParticipantDto
 import com.mohang.meeting.domain.meetingrole.MeetingRole
 import com.mohang.meeting.infrastructure.eventproducer.EventProducer
 import org.springframework.stereotype.Service
@@ -18,8 +16,6 @@ import org.springframework.transaction.support.TransactionTemplate
  */
 @Service
 class CreateMeetingFacade(
-
-    private val takeMemberDataUseCase: TakeMemberDataUseCase,
 
     private val createMeetingUseCase: CreateMeetingUseCase,
 
@@ -37,16 +33,13 @@ class CreateMeetingFacade(
     fun create(
         memberId: Long,
         createMeetingDto: CreateMeetingDto,
-        createApplyFormDto: CreateApplyFormDto
+        createApplyFormDto: CreateApplyFormDto,
+        createParticipantDto: CreateParticipantDto,
     ): Long {
 
-        // Member Service로부터 회원 정보 조회
-        val memberData = takeMemberDataUseCase.command(memberId)
-
-        // 블랙리스트라면 예외 발생
-        ifBlacklistThrowException(memberData, NoAuthorityCreateMeeting())
 
         val meetingId = transaction.execute {
+
             // 미팅 저장
             val meetingId = createMeetingUseCase.command(createMeetingDto)
 
@@ -55,21 +48,35 @@ class CreateMeetingFacade(
                 saveDefaultRoleAndReturnRepresentativeRoleId(meetingId)
 
             // 신청 회원을 모임 참가자(대표)로 설정
-            registerParticipantUseCase.command(memberData, meetingId, representativeRoleId)
+            registerParticipantUseCase.command(
+                memberId = memberId,
+                createParticipantDto = createParticipantDto,
+                meetingId = meetingId,
+                meetingRoleId = representativeRoleId
+            )
 
             // 가입 신청서 양식 저장
-            createApplyFormUseCase.command(createApplyFormDto, meetingId)
+            createApplyFormUseCase.command(
+                createApplyFormDto = createApplyFormDto,
+                meetingId = meetingId
+            )
 
             meetingId // return
         }
 
+
         checkNotNull(meetingId) { "meeting id is null" }
 
         // 이벤트 전송
-        eventProducer.send("create meeting event", meetingId)
+        eventProducer.send(
+            event = "create meeting event",
+            targetId = meetingId
+        )
 
         return meetingId
     }
+
+
 
     /**
      * 대표와 일반 회원 역할을 설정하고 저정함

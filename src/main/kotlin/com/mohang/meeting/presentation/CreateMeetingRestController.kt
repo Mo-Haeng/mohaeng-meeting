@@ -30,7 +30,12 @@ class CreateMeetingRestController(
         @Valid @RequestBody createMeetingRequest: CreateMeetingRequest,
     ): ResponseEntity<Unit> {
 
-        val meetingId = createMeetingFacade.create(authMember.id, createMeetingRequest.toServiceMeetingDto(),createMeetingRequest.toServiceApplyFormDto())
+        val meetingId = createMeetingFacade.create(
+            memberId = authMember.id,
+            createMeetingDto = createMeetingRequest.toServiceMeetingDto(),
+            createApplyFormDto = createMeetingRequest.toServiceApplyFormDto(),
+            createParticipantDto = createMeetingRequest.toServiceParticipantDto(),
+        )
 
         val uri = fromPath("/api/meeting/{meetingId}") // api/member/{memberId}
             .buildAndExpand(meetingId)      // api/member/10

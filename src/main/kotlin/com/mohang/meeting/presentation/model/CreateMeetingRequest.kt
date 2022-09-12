@@ -1,9 +1,6 @@
 package com.mohang.meeting.presentation.model
 
-import com.mohang.meeting.application.meeting.dto.ApplyFormFieldDto
-import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
 import com.mohang.meeting.application.meeting.dto.CreateMeetingDto
-import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 
 /**
@@ -11,15 +8,21 @@ import javax.validation.constraints.NotBlank
  */
 class CreateMeetingRequest(
 
+    // 모임의 이름
     @field:NotBlank private val name: String,
 
+    // 모임의 설명
     @field:NotBlank private val description: String,
 
+    // 모임 최대 인원
     private val capacity: Int = -1, //제한 없음 설정시 -1
 
-    @field:NotBlank private val applyFormName: String,
+    // 모임에 가입할 때 제출해야할 가입 신청서 양식 생성
+    private val createApplyFormRequest: CreateApplyFormRequest,
 
-    private val applyFormFields: List<ApplyFormFieldRequest> = mutableListOf()
+    // 모임에 가입할 프로필 (모임의 장의 프로필임)
+    private val createParticipantRequest: CreateParticipantRequest
+
 ) {
 
     fun toServiceMeetingDto() =
@@ -29,17 +32,9 @@ class CreateMeetingRequest(
             capacity = if (capacity <= 0) Int.MAX_VALUE else capacity,
         )
 
-
     fun toServiceApplyFormDto() =
-        CreateApplyFormDto(
-            applyFormName = applyFormName,
-            applyFormFields = applyFormFields.map { it.toServiceDto() }
-        )
-}
+       createApplyFormRequest.toServiceDto()
 
-
-data class ApplyFormFieldRequest(
-    @field:NotBlank val name: String
-){
-    fun toServiceDto() = ApplyFormFieldDto(name = name)
+    fun toServiceParticipantDto() =
+        createParticipantRequest.toServiceDto()
 }
