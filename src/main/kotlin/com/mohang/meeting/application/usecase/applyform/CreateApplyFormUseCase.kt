@@ -1,6 +1,6 @@
-package com.mohang.meeting.application.applyform
+package com.mohang.meeting.application.usecase.applyform
 
-import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
+import com.mohang.meeting.application.usecase.meeting.dto.CreateApplyFormDto
 import com.mohang.meeting.infrastructure.persistence.applyform.ApplyFormRepository
 import org.springframework.stereotype.Service
 

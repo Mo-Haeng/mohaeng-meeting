@@ -1,4 +1,4 @@
-package com.mohang.meeting.application.participant.dto
+package com.mohang.meeting.application.usecase.participant.dto
 
 /**
  * Created by ShinD on 2022/09/12.

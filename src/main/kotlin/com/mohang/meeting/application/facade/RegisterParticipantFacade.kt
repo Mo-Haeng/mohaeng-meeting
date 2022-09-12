@@ -1,9 +1,10 @@
-package com.mohang.meeting.application.participant
+package com.mohang.meeting.application.facade
 
-import com.mohang.meeting.application.participant.dto.CreateParticipantDto
-import com.mohang.meeting.application.participant.dto.SaveWrittenApplyFormDto
-import com.mohang.meeting.application.participant.exception.NotMatchApplyFormException
-import com.mohang.meeting.application.writtenapplyform.SaveWrittenApplyFormUseCase
+import com.mohang.meeting.application.usecase.participant.RegisterParticipantUseCase
+import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
+import com.mohang.meeting.application.usecase.participant.dto.SaveWrittenApplyFormDto
+import com.mohang.meeting.application.facade.exception.NotMatchApplyFormException
+import com.mohang.meeting.application.usecase.writtenapplyform.SaveWrittenApplyFormUseCase
 import com.mohang.meeting.query.dao.applyform.ApplyFormDataDao
 import com.mohang.meeting.query.dao.meetingrole.MeetingRoleDataDao
 import org.springframework.stereotype.Service

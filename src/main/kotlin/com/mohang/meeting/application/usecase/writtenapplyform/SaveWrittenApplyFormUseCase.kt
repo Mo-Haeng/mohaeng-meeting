@@ -1,6 +1,6 @@
-package com.mohang.meeting.application.writtenapplyform
+package com.mohang.meeting.application.usecase.writtenapplyform
 
-import com.mohang.meeting.application.participant.dto.SaveWrittenApplyFormDto
+import com.mohang.meeting.application.usecase.participant.dto.SaveWrittenApplyFormDto
 import com.mohang.meeting.infrastructure.persistence.writtenapplyform.WrittenApplyFormRepository
 import org.springframework.stereotype.Service
 

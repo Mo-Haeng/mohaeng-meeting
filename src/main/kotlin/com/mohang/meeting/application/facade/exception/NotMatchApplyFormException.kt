@@ -1,4 +1,4 @@
-package com.mohang.meeting.application.participant.exception
+package com.mohang.meeting.application.facade.exception
 
 /**
  * Created by ShinD on 2022/09/12.

@@ -1,11 +1,12 @@
-package com.mohang.meeting.application.meeting
+package com.mohang.meeting.application.facade
 
-import com.mohang.meeting.application.applyform.CreateApplyFormUseCase
-import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
-import com.mohang.meeting.application.meeting.dto.CreateMeetingDto
-import com.mohang.meeting.application.meetingrole.CreateDefaultMeetingRoleUseCase
-import com.mohang.meeting.application.participant.RegisterParticipantUseCase
-import com.mohang.meeting.application.participant.dto.CreateParticipantDto
+import com.mohang.meeting.application.usecase.applyform.CreateApplyFormUseCase
+import com.mohang.meeting.application.usecase.meeting.CreateMeetingUseCase
+import com.mohang.meeting.application.usecase.meeting.dto.CreateApplyFormDto
+import com.mohang.meeting.application.usecase.meeting.dto.CreateMeetingDto
+import com.mohang.meeting.application.usecase.meetingrole.CreateDefaultMeetingRoleUseCase
+import com.mohang.meeting.application.usecase.participant.RegisterParticipantUseCase
+import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
 import com.mohang.meeting.infrastructure.eventproducer.EventProducer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate

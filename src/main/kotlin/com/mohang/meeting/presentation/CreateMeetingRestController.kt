@@ -1,6 +1,6 @@
 package com.mohang.meeting.presentation
 
-import com.mohang.meeting.application.meeting.CreateMeetingFacade
+import com.mohang.meeting.application.facade.CreateMeetingFacade
 import com.mohang.meeting.presentation.argumentresolver.auth.Auth
 import com.mohang.meeting.presentation.model.AuthMember
 import com.mohang.meeting.presentation.model.CreateMeetingRequest
@@ -19,7 +19,7 @@ class CreateMeetingRestController(
 
     private val createMeetingFacade: CreateMeetingFacade,
 
-) {
+    ) {
 
     /**
      * 모임 생성

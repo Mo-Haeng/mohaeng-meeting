@@ -1,4 +1,4 @@
-package com.mohang.meeting.application.meeting.exception
+package com.mohang.meeting.application.usecase.meeting.exception
 
 /**
  * Created by ShinD on 2022/09/07.

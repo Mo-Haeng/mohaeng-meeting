@@ -1,6 +1,6 @@
-package com.mohang.meeting.application.meeting
+package com.mohang.meeting.application.usecase.meeting
 
-import com.mohang.meeting.application.meeting.dto.CreateMeetingDto
+import com.mohang.meeting.application.usecase.meeting.dto.CreateMeetingDto
 import com.mohang.meeting.infrastructure.persistence.meeting.MeetingRepository
 import org.springframework.stereotype.Service
 

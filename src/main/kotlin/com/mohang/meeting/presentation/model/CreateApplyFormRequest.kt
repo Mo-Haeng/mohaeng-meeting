@@ -1,7 +1,7 @@
 package com.mohang.meeting.presentation.model
 
-import com.mohang.meeting.application.meeting.dto.ApplyFormFieldDto
-import com.mohang.meeting.application.meeting.dto.CreateApplyFormDto
+import com.mohang.meeting.application.usecase.meeting.dto.ApplyFormFieldDto
+import com.mohang.meeting.application.usecase.meeting.dto.CreateApplyFormDto
 import javax.validation.constraints.NotBlank
 
 /**

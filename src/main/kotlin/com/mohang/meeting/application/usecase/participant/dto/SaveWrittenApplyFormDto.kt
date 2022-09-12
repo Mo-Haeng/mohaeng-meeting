@@ -1,4 +1,4 @@
-package com.mohang.meeting.application.participant.dto
+package com.mohang.meeting.application.usecase.participant.dto
 
 import com.mohang.meeting.domain.writtenapplyform.WrittenApplyForm
 import com.mohang.meeting.domain.writtenapplyform.WrittenApplyFormField

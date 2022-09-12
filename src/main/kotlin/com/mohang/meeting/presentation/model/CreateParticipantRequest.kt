@@ -1,6 +1,6 @@
 package com.mohang.meeting.presentation.model
 
-import com.mohang.meeting.application.participant.dto.CreateParticipantDto
+import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
 
 /**
  * Created by ShinD on 2022/09/12.

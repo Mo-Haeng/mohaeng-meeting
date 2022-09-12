@@ -1,4 +1,4 @@
-package com.mohang.meeting.application.meetingrole
+package com.mohang.meeting.application.usecase.meetingrole
 
 import com.mohang.meeting.domain.meetingrole.MeetingRole
 import com.mohang.meeting.infrastructure.persistence.meetingrole.MeetingRoleRepository

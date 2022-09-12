@@ -1,6 +1,6 @@
-package com.mohang.meeting.application.participant
+package com.mohang.meeting.application.usecase.participant
 
-import com.mohang.meeting.application.participant.dto.CreateParticipantDto
+import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
 import com.mohang.meeting.domain.participant.Participant
 import com.mohang.meeting.infrastructure.persistence.participant.ParticipantRepository
 import org.springframework.stereotype.Service
