@@ -16,7 +16,6 @@ class RegisterParticipantUseCase(
 ) {
 
     fun command(
-        memberId: Long,
         createParticipantDto: CreateParticipantDto,
         meetingId: Long,
         meetingRoleId: Long,
@@ -24,7 +23,7 @@ class RegisterParticipantUseCase(
 
         // 참가자 Entity 생성
         val participant = Participant(
-            memberId = memberId, // 회원 ID
+            memberId = createParticipantDto.memberId, // 회원 ID
             nickname = createParticipantDto.nickname, // 모임에서 사용할 별명
             profileImagePath = createParticipantDto.profileImagePath, // 모임에서 사용할 프사 url
             meetingId = meetingId, // 모임 ID

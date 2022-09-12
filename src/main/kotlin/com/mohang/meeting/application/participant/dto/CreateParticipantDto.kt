@@ -5,6 +5,9 @@ package com.mohang.meeting.application.participant.dto
  */
 data class CreateParticipantDto(
 
+    // 회원 ID
+    val memberId: Long,
+
     // 모임에서의 별명
     val nickname: String,
 

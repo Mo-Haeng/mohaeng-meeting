@@ -30,7 +30,6 @@ class CreateMeetingFacade(
 ) {
 
     fun create(
-        memberId: Long,
         createMeetingDto: CreateMeetingDto,
         createApplyFormDto: CreateApplyFormDto?,
         createParticipantDto: CreateParticipantDto,
@@ -48,7 +47,6 @@ class CreateMeetingFacade(
 
             // 신청 회원을 모임 참가자(대표)로 설정
             registerParticipantUseCase.command(
-                memberId = memberId,
                 createParticipantDto = createParticipantDto,
                 meetingId = meetingId,
                 meetingRoleId = representativeRoleId

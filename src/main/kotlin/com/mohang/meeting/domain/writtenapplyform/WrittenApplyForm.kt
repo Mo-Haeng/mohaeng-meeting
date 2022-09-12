@@ -4,8 +4,10 @@ package com.mohang.meeting.domain.writtenapplyform
  * Created by ShinD on 2022/09/07.
  */
 import com.mohang.meeting.configuration.jpa.BaseEntity
-import javax.persistence.*
 import javax.persistence.CascadeType.ALL
+import javax.persistence.Entity
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "WRITTEN_APPLY_FORM")
@@ -18,5 +20,9 @@ class WrittenApplyForm(
     @OneToMany(mappedBy = "writtenApplyForm", orphanRemoval = true, cascade = [ALL])
     private val writtenApplyFormFields: MutableList<WrittenApplyFormField> = mutableListOf(),
 
-) : BaseEntity() {
+    ) : BaseEntity() {
+
+    fun addAll(writtenApplyFormFields: List<WrittenApplyFormField>) {
+       this.writtenApplyFormFields.addAll(writtenApplyFormFields)
+    }
 }

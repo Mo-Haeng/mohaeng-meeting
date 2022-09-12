@@ -31,10 +31,9 @@ class CreateMeetingRestController(
     ): ResponseEntity<Unit> {
 
         val meetingId = createMeetingFacade.create(
-            memberId = authMember.id,
             createMeetingDto = createMeetingRequest.toServiceMeetingDto(),
             createApplyFormDto = createMeetingRequest.toServiceApplyFormDto(),
-            createParticipantDto = createMeetingRequest.toServiceParticipantDto(),
+            createParticipantDto = createMeetingRequest.toServiceParticipantDto(memberId = authMember.id),
         )
 
         val uri = fromPath("/api/meeting/{meetingId}") // api/member/{memberId}

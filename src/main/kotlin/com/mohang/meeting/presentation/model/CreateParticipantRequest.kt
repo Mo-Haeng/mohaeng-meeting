@@ -15,8 +15,9 @@ data class CreateParticipantRequest(
 
 ) {
 
-    fun toServiceDto(): CreateParticipantDto =
+    fun toServiceDto(memberId: Long): CreateParticipantDto =
         CreateParticipantDto(
+            memberId = memberId,
             nickname = nickname,
             profileImagePath = profileImagePath,
         )

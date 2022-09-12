@@ -36,6 +36,6 @@ class CreateMeetingRequest(
     fun toServiceApplyFormDto(): CreateApplyFormDto? =
        createApplyFormRequest?.toServiceDto()
 
-    fun toServiceParticipantDto() =
-        createParticipantRequest.toServiceDto()
+    fun toServiceParticipantDto(memberId: Long) =
+        createParticipantRequest.toServiceDto(memberId)
 }
