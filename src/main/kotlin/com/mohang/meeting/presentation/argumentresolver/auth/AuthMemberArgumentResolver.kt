@@ -2,8 +2,10 @@ package com.mohang.meeting.presentation.argumentresolver.auth
 
 import com.mohang.meeting.domain.jwt.AuthMemberProvider
 import com.mohang.meeting.domain.jwt.AuthToken
+import com.mohang.meeting.presentation.argumentresolver.auth.exception.BlacklistIsNoAuthorityException
 import com.mohang.meeting.presentation.argumentresolver.auth.exception.NotAuthenticationException
 import com.mohang.meeting.presentation.model.AuthMember
+import com.mohang.meeting.presentation.model.Role
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -44,7 +46,7 @@ class AuthMemberArgumentResolver(
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
-    ): AuthMember? {
+    ): AuthMember {
 
         //AUTH_TOKEN_HEADER_NAME(Authorization) 이 없는 경우 예외
         val authTokenValue = webRequest.getHeader(AUTH_TOKEN_HEADER_NAME)
@@ -57,6 +59,21 @@ class AuthMemberArgumentResolver(
         //accessToken 추출 (Bearer 제거)
         val authToken = authTokenValue.replace(AUTH_TOKEN_HEADER_PREFIX, "").trim()
 
-        return authMemberProvider.getAuthMember(AuthToken(authToken))
+        // 회원 정보 추출 (id, role)
+        val authMember = authMemberProvider.getAuthMember(AuthToken(authToken))
+
+        // @Auth 어노테이션 가져오기
+        val authAnnotation = parameter.getParameterAnnotation(Auth::class.java)!!
+
+        // 블랙리스트를 허용하지 않는다면 검증 시도
+        if ( ! authAnnotation.permitBlacklist ) {
+            validateNotBlacklist(authMember)
+        }
+
+        return authMember
+    }
+
+    private fun validateNotBlacklist(authMember: AuthMember) {
+        if (Role.isBlack(authMember.role)) throw BlacklistIsNoAuthorityException()
     }
 }

@@ -1,7 +1,5 @@
 package com.mohang.meeting.presentation.model
 
-import com.mohang.meeting.infrastructure.client.member.model.Role
-
 /**
  * Created by ShinD on 2022/09/08.
  */
@@ -11,3 +9,19 @@ data class AuthMember(
 
     val role: Role,
 )
+
+enum class Role {
+
+    ADMIN,
+
+    BASIC,
+
+    BLACK,;
+
+    companion object {
+
+        fun isBlack(role: Role): Boolean {
+            return role == BLACK
+        }
+    }
+}

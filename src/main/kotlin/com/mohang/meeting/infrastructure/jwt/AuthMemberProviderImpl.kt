@@ -2,15 +2,13 @@ package com.mohang.meeting.infrastructure.jwt
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.auth0.jwt.exceptions.JWTVerificationException
 import com.mohang.meeting.configuration.jwt.JwtConfiguration.Companion.MEMBER_ID_CLAIM
 import com.mohang.meeting.configuration.jwt.JwtConfiguration.Companion.MEMBER_ROLE_CLAIM
 import com.mohang.meeting.domain.jwt.AuthMemberProvider
 import com.mohang.meeting.domain.jwt.AuthToken
-import com.mohang.meeting.infrastructure.client.member.model.Role
 import com.mohang.meeting.infrastructure.jwt.properties.JwtProperties
 import com.mohang.meeting.presentation.model.AuthMember
-import org.springframework.stereotype.Service
+import com.mohang.meeting.presentation.model.Role
 
 /**
  * Created by ShinD on 2022/09/08.
