@@ -34,7 +34,9 @@ class MeetingDataDaoQuery(
                 participant.nickname
             )
         )
-            .from(meeting, participant)
+            .from(meeting)
+            .leftJoin(participant)
+            .on(participant.meetingId.eq(id)) // join 조건 필터링 (from절 세타조인 사용하면 cross join 발생함)
             .where(meeting.id.eq(id))
             .fetchOne()
             ?: throw NotFoundMeetingException()

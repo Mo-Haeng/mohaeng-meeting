@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class MeetingRoleDataDaoQuery(
 
-    private val query: JPAQueryFactory
+    private val query: JPAQueryFactory,
 
-) : MeetingRoleDataDao{
+    ) : MeetingRoleDataDao {
 
     override fun findDefaultRoleIdByMeetingId(meetingId: Long): Long {
 
@@ -40,17 +40,25 @@ class MeetingRoleDataDaoQuery(
     }
 
     override fun findByMemberIdAndMeetingId(memberId: Long, meetingId: Long): MeetingRoleData {
-        return query.select(QMeetingRoleData(
-            meetingRole.id,
-            meetingRole.name,
-            meetingRole.authority,
-            meetingRole.meetingId,
-            meetingRole.isParticipantDefault,
-        ))
-            .from(meetingRole, participant)
-            .where(
+        println(memberId)
+        println(meetingId)
+        return query.select(
+            QMeetingRoleData(
+                meetingRole.id,
+                meetingRole.name,
+                meetingRole.authority,
+                meetingRole.meetingId,
+                meetingRole.isParticipantDefault,
+            )
+        )
+            .from(meetingRole)
+            .join(participant)
+            .on(
                 participant.meetingId.eq(meetingId)
                     .and(participant.memberId.eq(memberId))
+            )
+            .where(
+                participant.meetingRoleId.eq(meetingRole.id)
             )
             .fetchOne()
             ?: throw NotFountParticipant()
