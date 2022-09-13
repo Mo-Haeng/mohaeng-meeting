@@ -46,7 +46,7 @@ class ApplyFormDataDaoQuery(
             )
         )
             .from(applyFormField)
-            .where(applyFormField.applyForm.id.eq(meetingId))
+            .where(applyFormField.applyForm.id.eq(applyFormData.id))
             .fetch()
 
         applyFormData.addAllFields(applyFormFieldDatas)
