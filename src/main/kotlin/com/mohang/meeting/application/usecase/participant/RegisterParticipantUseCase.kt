@@ -2,6 +2,7 @@ package com.mohang.meeting.application.usecase.participant
 
 import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
 import com.mohang.meeting.domain.participant.Participant
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.infrastructure.persistence.participant.ParticipantRepository
 import org.springframework.stereotype.Service
 
@@ -13,13 +14,14 @@ class RegisterParticipantUseCase(
 
     private val participantRepository: ParticipantRepository,
 
-) {
+    ) {
 
+    @Log
     fun command(
         createParticipantDto: CreateParticipantDto,
         meetingId: Long,
         meetingRoleId: Long,
-    ): Long  {
+    ): Long {
 
         // 참가자 Entity 생성
         val participant = Participant(

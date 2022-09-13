@@ -2,6 +2,7 @@ package com.mohang.meeting.query.dao.meeting
 
 import com.mohang.meeting.domain.meeting.QMeeting.meeting
 import com.mohang.meeting.domain.participant.QParticipant.participant
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.query.data.meeting.MeetingData
 import com.mohang.meeting.query.data.meeting.QMeetingData
 import com.mohang.meeting.query.exception.NotFoundMeetingException
@@ -19,6 +20,7 @@ class MeetingDataDaoQuery(
     private val query: JPAQueryFactory,
 ) : MeetingDataDao {
 
+    @Log
     override fun findById(id: Long): MeetingData {
         return query.select(
             QMeetingData(

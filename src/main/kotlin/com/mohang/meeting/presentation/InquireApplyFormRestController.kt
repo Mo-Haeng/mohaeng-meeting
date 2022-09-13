@@ -1,5 +1,6 @@
 package com.mohang.meeting.presentation
 
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.query.dao.applyform.ApplyFormDataDao
 import com.mohang.meeting.query.data.applyform.ApplyFormData
 import org.springframework.http.ResponseEntity
@@ -19,9 +20,10 @@ class InquireApplyFormRestController(
     /**
      * 모임 가입 신청서 조회(현재 사용중인 신청서 단일 조회)
      */
+    @Log
     @GetMapping("/api/meeting/{meetingId}/applyform")
     fun inquireUsedApplyFormByMeetingId(
-        @PathVariable(name = "meetingId") meetingId: Long
+        @PathVariable(name = "meetingId") meetingId: Long,
     ): ResponseEntity<ApplyFormData> =
         ResponseEntity.ok(applyFormDataDao.findUsedApplyFormByMeetingId(meetingId))
 }

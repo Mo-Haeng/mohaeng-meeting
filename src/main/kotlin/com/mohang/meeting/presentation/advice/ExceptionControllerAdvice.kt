@@ -23,7 +23,15 @@ class ExceptionControllerAdvice {
     @ExceptionHandler(JWTVerificationException::class, JWTDecodeException::class)
     fun handleJWTException(ex: Exception): ResponseEntity<ExceptionResponse> {
 
-        log.error { "Auth Token이 만료되었거나 잘못되었습니다. \n - message : [${ex.message}]\n - cause : [${ex.cause}]\n stackTrace : ${ex.stackTraceToString()}" }
+        log.error {
+            """
+            [ERROR] : [${ex::class.java.name}]
+            [CAUSE] : [Auth Token이 만료되었거나 잘못되었습니다.]
+            [MESSAGE] : [${ex.message}]
+            [STACK TRACE] : ${ex.stackTraceToString()}
+            
+            """
+        }
 
         return ResponseEntity
             .status(HttpStatus.UNAUTHORIZED)
@@ -37,6 +45,16 @@ class ExceptionControllerAdvice {
 
         log.error { "다른 서버와 요청을 주고받던 중 오류가 발생했습니다. \n - message : [${ex.exceptionResponse.message}]\n - code : [${ex.exceptionResponse.code}]" }
 
+        log.error {
+            """
+            [ERROR] : [${ex::class.java.name}]
+            [CAUSE] : [다른 서버와 요청을 주고받던 중 오류가 발생했습니다.]
+            [MESSAGE] : [${ex.message}]
+            [STACK TRACE] : ${ex.stackTraceToString()}
+            
+            """
+        }
+
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ex.exceptionResponse)
@@ -47,7 +65,15 @@ class ExceptionControllerAdvice {
     @ExceptionHandler(BindException::class, HttpMessageNotReadableException::class)
     fun handleBindException(ex: Exception): ResponseEntity<ExceptionResponse> {
 
-        log.error { "Json 혹은 요청 파라미터의 형식이 올바르지 않습니다. \n - message : [${ex.message}]\n - cause : [${ex.cause}]\n stackTrace : ${ex.stackTraceToString()}" }
+        log.error {
+            """
+            [ERROR] : [${ex::class.java.name}]
+            [CAUSE] : [Json 혹은 요청 파라미터의 형식이 올바르지 않습니다.]
+            [MESSAGE] : [${ex.message}]
+            [STACK TRACE] : ${ex.stackTraceToString()}
+            
+            """
+        }
 
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -59,7 +85,15 @@ class ExceptionControllerAdvice {
     @ExceptionHandler(RuntimeException::class)
     fun handleException(ex: RuntimeException): ResponseEntity<ExceptionResponse> {
 
-        log.error { "예외 발생 - message : [${ex.message}], cause : [${ex.cause}] \n stackTrace : ${ex.stackTraceToString()}" }
+        log.error {
+            """
+            [ERROR] : [${ex::class.java.name}]
+            [CAUSE] : [${ex.cause}]
+            [MESSAGE] : [${ex.message}]
+            [STACK TRACE] : ${ex.stackTraceToString()}
+            
+            """
+        }
 
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
@@ -71,8 +105,15 @@ class ExceptionControllerAdvice {
     @ExceptionHandler(Exception::class)
     fun handleException(ex: Exception): ResponseEntity<ExceptionResponse> {
 
-        log.error { "예측하지 못한 예외 발생 - message : [${ex.message}], cause : [${ex.cause}] \n stackTrace : ${ex.stackTraceToString()}" }
-
+        log.error {
+            """
+            [ERROR] : [${ex::class.java.name}]
+            [CAUSE] : [예측하지 못한 예외 발생. - ${ex.cause}]
+            [MESSAGE] : [${ex.message}]
+            [STACK TRACE] : ${ex.stackTraceToString()}
+            
+            """
+        }
         return ResponseEntity
             .status(500)
             .body(ExceptionResponse(code = 500, message = ex.message ?: "예측하지 못한 예외가 발생하였습니다."))

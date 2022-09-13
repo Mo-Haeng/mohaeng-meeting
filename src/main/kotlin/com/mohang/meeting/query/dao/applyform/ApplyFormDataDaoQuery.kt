@@ -2,6 +2,7 @@ package com.mohang.meeting.query.dao.applyform
 
 import com.mohang.meeting.domain.applyform.QApplyForm.applyForm
 import com.mohang.meeting.domain.applyform.QApplyFormField.applyFormField
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.query.data.applyform.ApplyFormData
 import com.mohang.meeting.query.data.applyform.QApplyFormData
 import com.mohang.meeting.query.data.applyform.QApplyFormFieldData
@@ -19,6 +20,7 @@ class ApplyFormDataDaoQuery(
     private val query: JPAQueryFactory,
 ) : ApplyFormDataDao {
 
+    @Log
     override fun findUsedApplyFormByMeetingId(meetingId: Long): ApplyFormData {
 
         val applyFormData = query.select(

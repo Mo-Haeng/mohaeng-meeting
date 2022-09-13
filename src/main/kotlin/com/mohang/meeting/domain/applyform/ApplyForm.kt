@@ -4,6 +4,7 @@ package com.mohang.meeting.domain.applyform
  * Created by ShinD on 2022/09/07.
  */
 import com.mohang.meeting.configuration.jpa.BaseEntity
+import com.mohang.meeting.infrastructure.log.Log
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -26,8 +27,9 @@ class ApplyForm(
 
 ) : BaseEntity() {
 
+    @Log
     fun addAllFields(applyFormFields: List<ApplyFormField>) {
-        applyFormFields.forEach{it.confirmApplyForm(this)}
+        applyFormFields.forEach { it.confirmApplyForm(this) }
         this.applyFormFields.addAll(applyFormFields)
     }
 }

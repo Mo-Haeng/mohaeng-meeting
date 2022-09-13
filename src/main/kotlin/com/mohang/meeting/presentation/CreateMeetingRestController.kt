@@ -1,6 +1,7 @@
 package com.mohang.meeting.presentation
 
 import com.mohang.meeting.application.facade.CreateMeetingFacade
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.presentation.argumentresolver.auth.Auth
 import com.mohang.meeting.presentation.model.AuthMember
 import com.mohang.meeting.presentation.model.CreateMeetingRequest
@@ -24,6 +25,7 @@ class CreateMeetingRestController(
     /**
      * 모임 생성
      */
+    @Log
     @PostMapping("/api/meeting")
     fun create(
         @Auth authMember: AuthMember,

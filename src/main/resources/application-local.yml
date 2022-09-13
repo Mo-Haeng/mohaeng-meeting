@@ -41,6 +41,7 @@ spring:
 logging:
   level:
     root: info
+    com.mohang.meeting.infrastructure.log: debug
     org.hiberante.SQL: debug
     org.hiberante.type: debug
-    org.apache.coyote.http11: debug #Http 요청정보 로그 남기기
+    #org.apache.coyote.http11: debug #Http 요청정보 로그 남기기

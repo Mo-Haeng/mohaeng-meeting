@@ -4,6 +4,7 @@ package com.mohang.meeting.domain.writtenapplyform
  * Created by ShinD on 2022/09/07.
  */
 import com.mohang.meeting.configuration.jpa.BaseEntity
+import com.mohang.meeting.infrastructure.log.Log
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Entity
 import javax.persistence.OneToMany
@@ -22,7 +23,8 @@ class WrittenApplyForm(
 
     ) : BaseEntity() {
 
+    @Log
     fun addAll(writtenApplyFormFields: List<WrittenApplyFormField>) {
-       this.writtenApplyFormFields.addAll(writtenApplyFormFields)
+        this.writtenApplyFormFields.addAll(writtenApplyFormFields)
     }
 }

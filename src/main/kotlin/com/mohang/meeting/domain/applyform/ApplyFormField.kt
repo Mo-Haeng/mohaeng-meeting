@@ -4,6 +4,7 @@ package com.mohang.meeting.domain.applyform
  * Created by ShinD on 2022/09/07.
  */
 import com.mohang.meeting.configuration.jpa.BaseEntity
+import com.mohang.meeting.infrastructure.log.Log
 import javax.persistence.Entity
 import javax.persistence.FetchType.LAZY
 import javax.persistence.JoinColumn
@@ -22,7 +23,8 @@ class ApplyFormField(
 
 ) : BaseEntity() {
 
+    @Log
     fun confirmApplyForm(applyForm: ApplyForm) {
-       this.applyForm = applyForm
+        this.applyForm = applyForm
     }
 }

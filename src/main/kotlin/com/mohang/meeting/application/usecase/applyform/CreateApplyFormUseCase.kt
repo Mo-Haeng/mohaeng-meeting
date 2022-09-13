@@ -1,6 +1,7 @@
 package com.mohang.meeting.application.usecase.applyform
 
 import com.mohang.meeting.application.usecase.meeting.dto.CreateApplyFormDto
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.infrastructure.persistence.applyform.ApplyFormRepository
 import org.springframework.stereotype.Service
 
@@ -12,9 +13,10 @@ class CreateApplyFormUseCase(
 
     private val applyFormRepository: ApplyFormRepository,
 
-) {
+    ) {
 
-    fun command(createApplyFormDto: CreateApplyFormDto, meetingId: Long): Long  {
+    @Log
+    fun command(createApplyFormDto: CreateApplyFormDto, meetingId: Long): Long {
 
         val applyForm = createApplyFormDto.toEntity(meetingId)
 

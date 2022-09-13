@@ -1,6 +1,7 @@
 package com.mohang.meeting.application.usecase.meetingrole
 
 import com.mohang.meeting.domain.meetingrole.MeetingRole
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.infrastructure.persistence.meetingrole.MeetingRoleRepository
 import org.springframework.stereotype.Service
 
@@ -17,11 +18,12 @@ class CreateDefaultMeetingRoleUseCase(
 
     private val meetingRoleRepository: MeetingRoleRepository,
 
-) {
+    ) {
 
     /**
      * 기본 역할인 대표와, 일반 회원 역할을 추가한다.
      */
+    @Log
     fun createAndReturnRepresentativeRoleId(meetingId: Long): Long {
         val representativeRole = MeetingRole.representativeRole(meetingId)
         val basicRole = MeetingRole.basicRole(meetingId)

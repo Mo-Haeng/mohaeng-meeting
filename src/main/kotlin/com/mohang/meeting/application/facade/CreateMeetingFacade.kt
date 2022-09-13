@@ -8,6 +8,7 @@ import com.mohang.meeting.application.usecase.meetingrole.CreateDefaultMeetingRo
 import com.mohang.meeting.application.usecase.participant.RegisterParticipantUseCase
 import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
 import com.mohang.meeting.infrastructure.eventproducer.EventProducer
+import com.mohang.meeting.infrastructure.log.Log
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 
@@ -30,6 +31,7 @@ class CreateMeetingFacade(
     private val transaction: TransactionTemplate,
 ) {
 
+    @Log
     fun create(
         createMeetingDto: CreateMeetingDto,
         createApplyFormDto: CreateApplyFormDto?,
@@ -44,7 +46,7 @@ class CreateMeetingFacade(
 
             // 모임의 대표 역할과 일반 회원 역할 설정
             val representativeRoleId = createDefaultMeetingRoleUseCase
-                                        .createAndReturnRepresentativeRoleId(meetingId)
+                .createAndReturnRepresentativeRoleId(meetingId)
 
             // 신청 회원을 모임 참가자(대표)로 설정
             registerParticipantUseCase.command(

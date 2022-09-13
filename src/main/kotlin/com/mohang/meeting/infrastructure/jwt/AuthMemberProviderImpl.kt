@@ -7,29 +7,30 @@ import com.mohang.meeting.configuration.jwt.JwtConfiguration.Companion.MEMBER_RO
 import com.mohang.meeting.domain.jwt.AuthMemberProvider
 import com.mohang.meeting.domain.jwt.AuthToken
 import com.mohang.meeting.infrastructure.jwt.properties.JwtProperties
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.presentation.model.AuthMember
 import com.mohang.meeting.presentation.model.Role
 
 /**
  * Created by ShinD on 2022/09/08.
  */
-class AuthMemberProviderImpl(
+open class AuthMemberProviderImpl(
 
     jwtProperties: JwtProperties,
 
-): AuthMemberProvider {
-
+    ) : AuthMemberProvider {
 
     // JWT 암호 알고리즘
     private val algorithm: Algorithm by lazy {
         Algorithm.HMAC512(jwtProperties.secretKey)
     }
 
+    @Log
     override fun getAuthMember(authToken: AuthToken): AuthMember {
 
-            val jwt          =   JWT.require(algorithm).build().verify(authToken.token)
-            val id           =   jwt.getClaim(MEMBER_ID_CLAIM).toString().replace("\"", "")
-            val role         =   jwt.getClaim(MEMBER_ROLE_CLAIM).toString().replace("\"", "")
+        val jwt = JWT.require(algorithm).build().verify(authToken.token)
+        val id = jwt.getClaim(MEMBER_ID_CLAIM).toString().replace("\"", "")
+        val role = jwt.getClaim(MEMBER_ROLE_CLAIM).toString().replace("\"", "")
 
         return AuthMember(id = id.toLong(), role = Role.valueOf(role))
     }

@@ -1,5 +1,6 @@
 package com.mohang.meeting.presentation
 
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.query.dao.meeting.MeetingDataDao
 import com.mohang.meeting.query.data.meeting.MeetingData
 import org.springframework.http.ResponseEntity
@@ -19,9 +20,10 @@ class InquireMeetingRestController(
     /**
      * 모임 정보 조회
      */
+    @Log
     @GetMapping("/api/meeting/{meetingId}")
     fun inquireMeeting(
-        @PathVariable(name = "meetingId") meetingId: Long
+        @PathVariable(name = "meetingId") meetingId: Long,
     ): ResponseEntity<MeetingData> =
         ResponseEntity.ok(meetingDataDao.findById(meetingId))
 }

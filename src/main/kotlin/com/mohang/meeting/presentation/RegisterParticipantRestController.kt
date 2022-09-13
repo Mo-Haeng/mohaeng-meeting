@@ -1,6 +1,7 @@
 package com.mohang.meeting.presentation
 
 import com.mohang.meeting.application.facade.RegisterParticipantFacade
+import com.mohang.meeting.infrastructure.log.Log
 import com.mohang.meeting.presentation.argumentresolver.auth.Auth
 import com.mohang.meeting.presentation.model.AuthMember
 import com.mohang.meeting.presentation.model.RegisterParticipantRequest
@@ -20,6 +21,7 @@ class RegisterParticipantRestController(
     private val registerParticipantFacade: RegisterParticipantFacade,
 ) {
 
+    @Log
     @PostMapping("/api/participate/meeting/{meetingId}")
     fun registerParticipant(
         @Auth accepter: AuthMember,
