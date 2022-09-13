@@ -12,7 +12,7 @@ data class SaveWrittenApplyFormDto(
 
     val applyFormId: Long, // 해당 작성된 신청서는 어느 신청양식을 작성한 것인지
 
-    val writtenApplyFormFields: MutableList<WrittenApplyFormDto> = mutableListOf(),
+    val writtenApplyFormFields: List<WrittenApplyFormDto> = listOf(),
 
     ) {
 
@@ -23,7 +23,7 @@ data class SaveWrittenApplyFormDto(
             applyFormId = applyFormId,
         )
 
-        writtenApplyForm.addAll(writtenApplyFormFields.map { it.toEntity(writtenApplyForm) })
+        writtenApplyForm.addAll( writtenApplyFormFields.map { it.toEntity(writtenApplyForm) } )
 
         return writtenApplyForm
     }
