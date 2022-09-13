@@ -36,11 +36,11 @@ data class RegisterParticipantRequest(
     fun toServiceWrittenApplyFormDto(): SaveWrittenApplyFormDto? {
 
         // 신청 양식의 id가 1 이상이면서, 필드가 모두 작성된 경우
-        return if(applyFormId >= 1 && writtenApplyFormFields.isNotEmpty() ) {
+        return if (applyFormId >= 1) {
 
             val writtenApplyFormDtos = writtenApplyFormFields.map { it.toServiceDto() }
 
-             SaveWrittenApplyFormDto(
+            SaveWrittenApplyFormDto(
                 memberId = memberId,
                 applyFormId = applyFormId,
                 writtenApplyFormFields = writtenApplyFormDtos,
