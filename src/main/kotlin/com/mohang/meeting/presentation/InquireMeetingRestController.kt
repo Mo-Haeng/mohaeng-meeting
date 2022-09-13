@@ -1,6 +1,7 @@
 package com.mohang.meeting.presentation
 
 import com.mohang.meeting.query.dao.meeting.MeetingDataDao
+import com.mohang.meeting.query.data.meeting.MeetingData
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,6 +20,8 @@ class InquireMeetingRestController(
      * 모임 정보 조회
      */
     @GetMapping("/api/meeting/{meetingId}")
-    fun inquireMeeting(@PathVariable(name = "meetingId") meetingId: Long) =
+    fun inquireMeeting(
+        @PathVariable(name = "meetingId") meetingId: Long
+    ): ResponseEntity<MeetingData> =
         ResponseEntity.ok(meetingDataDao.findById(meetingId))
 }
