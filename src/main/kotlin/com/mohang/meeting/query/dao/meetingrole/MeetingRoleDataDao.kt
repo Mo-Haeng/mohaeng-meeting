@@ -12,4 +12,10 @@ interface MeetingRoleDataDao {
 
     // 특정 모임의 모든 역할 조회하기
     fun findAllRolesByMeetingId(meetingId: Long): List<MeetingRoleData>
+
+    /**
+     * 미팅 ID와 회원의 ID를 통해
+     * 해당 미팅에서의 회원의 역할 조회
+     */
+    fun findByMemberIdAndMeetingId(memberId: Long, meetingId: Long): MeetingRoleData
 }

@@ -1,10 +1,13 @@
 package com.mohang.meeting.application.facade
 
+import com.mohang.meeting.application.facade.exception.NoAuthorityAcceptParticipationRequest
 import com.mohang.meeting.application.usecase.participant.RegisterParticipantUseCase
 import com.mohang.meeting.application.usecase.participant.dto.CreateParticipantDto
 import com.mohang.meeting.application.usecase.participant.dto.SaveWrittenApplyFormDto
 import com.mohang.meeting.application.facade.exception.NotMatchApplyFormException
 import com.mohang.meeting.application.usecase.writtenapplyform.SaveWrittenApplyFormUseCase
+import com.mohang.meeting.domain.meetingrole.enums.MeetingAuthority
+import com.mohang.meeting.presentation.model.AuthMember
 import com.mohang.meeting.query.dao.applyform.ApplyFormDataDao
 import com.mohang.meeting.query.dao.meetingrole.MeetingRoleDataDao
 import org.springframework.stereotype.Service
@@ -30,13 +33,19 @@ class RegisterParticipantFacade(
     /**
      * meeting이 없다면 예외
      *
+     * 승인자의 권한이 매니저 이상이 아니라면 예외
+     *
      * meeting의 기본 역할로 참가시키기
      */
     fun command(
+        accepter: AuthMember,
         createParticipantDto: CreateParticipantDto,     // 참가하는 회원의 모임에서의 프로필 저장시 필요
         saveWrittenApplyFormDto: SaveWrittenApplyFormDto?, // 작성된 가입 신청서 저장시 필요
         meetingId: Long,
     ): Long {
+
+        // 참가시키는 사람이 모임의 관리자 권한 이상을 가져야 함
+        checkAccepterAuthority(accepter, meetingId)
 
         // 모임의 기본 역할 조회하기 (모임이 존재하지 않거나, 모임의 기본 역할이 없는 경우 예외 (후자는 절대 발생하면 안되는 케이스))
         val defaultRoleId = meetingRoleDataDao.findDefaultRoleIdByMeetingId(meetingId)
@@ -51,7 +60,7 @@ class RegisterParticipantFacade(
                 meetingRoleId = defaultRoleId
             )
 
-            // 작성된 가입 신청서 저장하기
+            // 작성된 가입 신청서가 있다면 저장하기 (가입 신청서 양식이 없는 경우도 있음)
             saveWrittenApplyForm(
                 meetingId = meetingId,
                 saveWrittenApplyFormDto = saveWrittenApplyFormDto
@@ -59,6 +68,28 @@ class RegisterParticipantFacade(
 
             participantId // return
         }!!
+    }
+
+
+    /**
+     * 가입 승인을 한 사람은 관리자 권한 이상이어야 함.
+     */
+    private fun checkAccepterAuthority(
+        accepter: AuthMember,
+        meetingId: Long,
+    ) {
+        val meetingRole = meetingRoleDataDao.findByMemberIdAndMeetingId(
+            memberId = accepter.id,
+            meetingId = meetingId
+        )
+
+        when (meetingRole.authority) {
+            // 매니저 이상의 등급이면 권한이 있음
+            MeetingAuthority.REPRESENTATIVE -> return
+            MeetingAuthority.MANAGER -> return
+            MeetingAuthority.BASIC -> throw NoAuthorityAcceptParticipationRequest()
+        }
+
     }
 
 
@@ -76,7 +107,8 @@ class RegisterParticipantFacade(
         if (!applyFormData.isExist) return
 
         // 작성된 가입 신청서가 없거나, 양식이 일치하지 않는다면 예외
-        if (saveWrittenApplyFormDto == null || applyFormData.id == saveWrittenApplyFormDto.applyFormId) {
+        if (saveWrittenApplyFormDto == null
+            || applyFormData.id == saveWrittenApplyFormDto.applyFormId) {
             throw NotMatchApplyFormException()
         }
 

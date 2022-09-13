@@ -1,8 +1,12 @@
 package com.mohang.meeting.query.dao.meetingrole
 
 import com.mohang.meeting.domain.meetingrole.QMeetingRole.meetingRole
+import com.mohang.meeting.domain.participant.QParticipant
+import com.mohang.meeting.domain.participant.QParticipant.participant
 import com.mohang.meeting.query.data.meetingrole.MeetingRoleData
+import com.mohang.meeting.query.data.meetingrole.QMeetingRoleData
 import com.mohang.meeting.query.exception.NotFoundDefaultRole
+import com.mohang.meeting.query.exception.NotFountParticipant
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -33,5 +37,22 @@ class MeetingRoleDataDaoQuery(
 
     override fun findAllRolesByMeetingId(meetingId: Long): List<MeetingRoleData> {
         TODO("Not yet implemented")
+    }
+
+    override fun findByMemberIdAndMeetingId(memberId: Long, meetingId: Long): MeetingRoleData {
+        return query.select(QMeetingRoleData(
+            meetingRole.id,
+            meetingRole.name,
+            meetingRole.authority,
+            meetingRole.meetingId,
+            meetingRole.isParticipantDefault,
+        ))
+            .from(meetingRole, participant)
+            .where(
+                participant.meetingId.eq(meetingId)
+                    .and(participant.memberId.eq(memberId))
+            )
+            .fetchOne()
+            ?: throw NotFountParticipant()
     }
 }
