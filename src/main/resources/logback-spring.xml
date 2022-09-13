@@ -77,6 +77,11 @@
                 <onMismatch>NEUTRAL</onMismatch>
             </filter>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>debug</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>NEUTRAL</onMismatch>
+            </filter>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>warn</level>
                 <onMatch>ACCEPT</onMatch>
                 <onMismatch>DENY</onMismatch>
