@@ -11,7 +11,7 @@ plugins {
 	kotlin("kapt") version "1.7.10"
 }
 
-group = "com.mohang"
+group = "com.mohaeng"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
@@ -36,12 +36,13 @@ noArg {
 dependencies {
 
 	// Eureka Client
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+	//implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
 	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation ("org.springframework.cloud:spring-cloud-starter-openfeign")
 
 	// Kotlin
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

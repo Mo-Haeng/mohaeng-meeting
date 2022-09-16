@@ -11,7 +11,7 @@ eureka:
 
 spring:
   application:
-    name: mohang-member-service
+    name: mohang-meeting-service
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -41,6 +41,7 @@ spring:
 logging:
   level:
     root: info
+    com.mohaeng.meeting.infrastructure.log: debug
     org.hiberante.SQL: debug
     org.hiberante.type: debug
-    org.apache.coyote.http11: debug #Http 요청정보 로그 남기기
+    #org.apache.coyote.http11: debug #Http 요청정보 로그 남기기
