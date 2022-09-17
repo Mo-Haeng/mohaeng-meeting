@@ -22,7 +22,6 @@ class MeetingRoleDataDaoQuery(
 
     ) : MeetingRoleDataDao {
 
-
     @Log
     override fun findDefaultRoleIdByMeetingId(meetingId: Long): Long {
 

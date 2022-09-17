@@ -21,7 +21,6 @@ data class MeetingData @QueryProjection constructor(
 
     val modifiedAt: String, // 최종 수정 시간
 
-
     val representativeParticipantId: Long, // 모임 대표의 참가자 ID(member id가 아님에 주의)
 
     val representativeMemberId: Long, // 해당 참가자의 회원 ID

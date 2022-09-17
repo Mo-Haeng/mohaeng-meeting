@@ -34,7 +34,7 @@ class CreateMeetingRestController(
 
         val meetingId = createMeetingFacade.create(
             createMeetingDto = createMeetingRequest.toServiceMeetingDto(),
-            createApplyFormDto = createMeetingRequest.toServiceApplyFormDto(),
+            createParticipationFormDto = createMeetingRequest.toServiceApplyFormDto(),
             createParticipantDto = createMeetingRequest.toServiceParticipantDto(memberId = authMember.id),
         )
 

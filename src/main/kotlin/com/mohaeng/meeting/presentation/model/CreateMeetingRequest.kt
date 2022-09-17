@@ -1,8 +1,8 @@
 package com.mohaeng.meeting.presentation.model
 
-import com.mohaeng.meeting.application.usecase.meeting.dto.ApplyFormFieldDto
-import com.mohaeng.meeting.application.usecase.meeting.dto.CreateApplyFormDto
 import com.mohaeng.meeting.application.usecase.meeting.dto.CreateMeetingDto
+import com.mohaeng.meeting.application.usecase.meeting.dto.CreateParticipationFormDto
+import com.mohaeng.meeting.application.usecase.meeting.dto.ParticipationFormFieldDto
 import com.mohaeng.meeting.application.usecase.participant.dto.CreateParticipantDto
 import javax.validation.constraints.NotBlank
 
@@ -23,12 +23,12 @@ class CreateMeetingRequest(
     val capacity: Int = -1, //제한 없음 설정시 -1
 
     // 모임에 가입할 때 제출해야할 가입 신청서 양식 생성 (없는 경우 저장하지 않음)
-    val createApplyFormRequest: CreateApplyFormRequest,
+    val createParticipationFormRequest: CreateParticipationFormRequest,
 
     // 모임에 가입할 프로필 (모임의 장의 프로필임)
-    val createParticipantRequest: CreateParticipantRequest
+    val createParticipantRequest: CreateParticipantRequest,
 
-) {
+    ) {
 
     fun toServiceMeetingDto(): CreateMeetingDto =
         CreateMeetingDto(
@@ -37,11 +37,10 @@ class CreateMeetingRequest(
             capacity = if (capacity <= 0) Int.MAX_VALUE else capacity,
         )
 
-    fun toServiceApplyFormDto(): CreateApplyFormDto? {
+    fun toServiceApplyFormDto(): CreateParticipationFormDto? {
         // 만약 양식의 이름이 있다면 CreateApplyFormDto를 반환
-        return createApplyFormRequest.toServiceDto()
+        return createParticipationFormRequest.toServiceDto()
     }
-
 
     fun toServiceParticipantDto(memberId: Long): CreateParticipantDto =
         createParticipantRequest.toServiceDto(memberId)
@@ -51,23 +50,25 @@ class CreateMeetingRequest(
 /**
  *  모임에 가입할 때 제출해야할 가입 신청서 양식 (없는 경우 저장하지 않음)
  */
-data class CreateApplyFormRequest(
+data class CreateParticipationFormRequest(
 
     // 모임의 가입 신청서 이름
     val applyFormName: String,
 
     // 모임 가입 시 작성해야 할 정보 이름들
-    val applyFormFields: List<ApplyFormFieldRequest> = mutableListOf()
+    val applyFormFields: List<ApplyFormFieldRequest> = mutableListOf(),
 ) {
-    fun toServiceDto(): CreateApplyFormDto?  {
+
+    fun toServiceDto(): CreateParticipationFormDto? {
 
         // 양식의 이름이 빈칸이 아니면서, 필드가 1개 이상 존재하는 경우에만 생성
         return if (applyFormName.isNotBlank() && applyFormFields.isNotEmpty()) {
-            CreateApplyFormDto(
-                applyFormName = applyFormName,
-                applyFormFields = applyFormFields.map { it.toServiceDto() }
+            CreateParticipationFormDto(
+                participationFormName = applyFormName,
+                participationFormFields = applyFormFields.map { it.toServiceDto() }
             )
-        } else null
+        }
+        else null
     }
 }
 
@@ -76,9 +77,10 @@ data class CreateApplyFormRequest(
  *  모임에 가입할 때 제출해야할 가입 신청서 양식의 필드명들
  */
 data class ApplyFormFieldRequest(
-    @field:NotBlank val name: String
-){
-    fun toServiceDto() = ApplyFormFieldDto(name = name)
+    @field:NotBlank val name: String,
+) {
+
+    fun toServiceDto() = ParticipationFormFieldDto(name = name)
 }
 
 /**
@@ -92,7 +94,7 @@ data class CreateParticipantRequest(
     // 모임에서 사용할 프사 url
     val profileImagePath: String,
 
-) {
+    ) {
 
     fun toServiceDto(memberId: Long): CreateParticipantDto =
         CreateParticipantDto(

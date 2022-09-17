@@ -15,7 +15,7 @@ class ParticipantDataDaoQuery(
 
     private val query: JPAQueryFactory,
 
-) : ParticipantDataDao {
+    ) : ParticipantDataDao {
 
     @Log
     override fun existByMemberIdAndMeetingId(

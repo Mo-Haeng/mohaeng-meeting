@@ -1,8 +1,8 @@
 package com.mohaeng.meeting.presentation.model
 
 import com.mohaeng.meeting.application.usecase.participant.dto.CreateParticipantDto
-import com.mohaeng.meeting.application.usecase.participant.dto.SaveWrittenApplyFormDto
-import com.mohaeng.meeting.application.usecase.participant.dto.WrittenApplyFormDto
+import com.mohaeng.meeting.application.usecase.participant.dto.SaveWrittenParticipationFormDto
+import com.mohaeng.meeting.application.usecase.participant.dto.WrittenParticipationFormDto
 import javax.validation.constraints.NotBlank
 
 /**
@@ -19,9 +19,9 @@ data class RegisterParticipantRequest(
     // 모임에서 사용할 프사 url (없는 경우 "")
     val profileImagePath: String,
 
-    val applyFormId: Long = -1, // 해당 작성된 신청서는 어느 신청양식을 작성한 것인지 (없는 경우 -1)
+    val participationFormId: Long = -1, // 해당 작성된 신청서는 어느 신청양식을 작성한 것인지 (없는 경우 -1)
 
-    val writtenApplyFormFields: List<WrittenApplyFormRequest> = listOf(),
+    val writtenParticipationFormFields: List<WrittenParticipationFormRequest> = listOf(),
 
     ) {
 
@@ -33,33 +33,33 @@ data class RegisterParticipantRequest(
         )
     }
 
-    fun toServiceWrittenApplyFormDto(): SaveWrittenApplyFormDto? {
+    fun toServiceWrittenApplyFormDto(): SaveWrittenParticipationFormDto? {
 
         // 신청 양식의 id가 1 이상이면서, 필드가 모두 작성된 경우
-        return if (applyFormId >= 1) {
+        return if (participationFormId >= 1) {
 
-            val writtenApplyFormDtos = writtenApplyFormFields.map { it.toServiceDto() }
+            val writtenApplyFormDtos = writtenParticipationFormFields.map { it.toServiceDto() }
 
-            SaveWrittenApplyFormDto(
+            SaveWrittenParticipationFormDto(
                 memberId = memberId,
-                applyFormId = applyFormId,
-                writtenApplyFormFields = writtenApplyFormDtos,
+                participationFormId = participationFormId,
+                writtenParticipationFormFields = writtenApplyFormDtos,
             )
         }
         else null
     }
 }
 
-data class WrittenApplyFormRequest(
+data class WrittenParticipationFormRequest(
 
-    @field:NotBlank val applyFormFieldId: Long, // 어느 신청 양식 필드에 대한 작성값인지
+    @field:NotBlank val participationFormFieldId: Long, // 어느 신청 양식 필드에 대한 작성값인지
 
     @field:NotBlank val content: String, // 작성된 내용
 ) {
 
-    fun toServiceDto(): WrittenApplyFormDto {
-        return WrittenApplyFormDto(
-            applyFormFieldId = applyFormFieldId,
+    fun toServiceDto(): WrittenParticipationFormDto {
+        return WrittenParticipationFormDto(
+            participationFormFieldId = participationFormFieldId,
             content = content,
         )
     }

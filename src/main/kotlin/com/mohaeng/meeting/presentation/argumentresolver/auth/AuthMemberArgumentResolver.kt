@@ -21,9 +21,10 @@ class AuthMemberArgumentResolver(
 
     private val authMemberProvider: AuthMemberProvider,
 
-) : HandlerMethodArgumentResolver {
+    ) : HandlerMethodArgumentResolver {
 
     companion object {
+
         const val AUTH_TOKEN_HEADER_NAME = "Authorization"
         const val AUTH_TOKEN_HEADER_PREFIX = "Bearer "
     }
@@ -36,10 +37,6 @@ class AuthMemberArgumentResolver(
 
         return hasAuthAnnotation && hasAuthMemberPrincipleType
     }
-
-
-
-
 
     override fun resolveArgument(
         parameter: MethodParameter,
@@ -66,7 +63,7 @@ class AuthMemberArgumentResolver(
         val authAnnotation = parameter.getParameterAnnotation(Auth::class.java)!!
 
         // 블랙리스트를 허용하지 않는다면 검증 시도
-        if ( ! authAnnotation.permitBlacklist ) {
+        if (!authAnnotation.permitBlacklist) {
             validateNotBlacklist(authMember)
         }
 

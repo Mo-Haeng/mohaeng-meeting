@@ -10,7 +10,8 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "PARTICIPANT")
-class Participant( // 모임에 참여한 참가자
+class Participant(
+    // 모임에 참여한 참가자
 
     private val memberId: Long, // 해당 참가자의 회원 ID
 

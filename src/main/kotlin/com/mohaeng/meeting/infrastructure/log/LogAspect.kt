@@ -15,7 +15,7 @@ class LogAspect {
 
     private val log = KotlinLogging.logger { }
 
-    @Around("@annotation(com.mohang.meeting.infrastructure.log.Log)")
+    @Around("@annotation(com.mohaeng.meeting.infrastructure.log.Log)")
     fun doLog4(joinPoint: ProceedingJoinPoint): Any? {
 
         log.debug { "[CALL] : [${joinPoint.signature}]" }
