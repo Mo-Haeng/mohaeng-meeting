@@ -22,7 +22,7 @@ class ParticipationFormDataDaoQuery(
 ) : ParticipationFormDataDao {
 
     @Log
-    override fun findUsedParticipationFormByMeetingId(meetingId: Long): ParticipationFormData {
+    override fun findUsedParticipationFormByMeetingId(meetingId: Long): ParticipationFormData? {
 
         val participationFormData = query.select(
             QParticipationFormData(
@@ -39,8 +39,8 @@ class ParticipationFormDataDaoQuery(
                     .and(participationForm.isCurrentUsed.isTrue)
             )
             .fetchOne()
-        // 만약 가입 신청서가 없는 경우 존재하지 않음을 표시하는 데이터를 반환하고 종료
-            ?: return ParticipationFormData(isExist = false)
+            // 만약 가입 신청서가 없는 경우 곧바로 반환
+            ?: return null
 
         val applyFormFieldDatas = query.select(
             QParticipationFormFieldData(
@@ -57,41 +57,42 @@ class ParticipationFormDataDaoQuery(
         return participationFormData
     }
 
-    override fun findById(id: Long): ParticipationFormData {
-        val participationFormData = ParticipationFormData(
-            id = 1L,
-            isExist = true,
-            createdAt = "2011-01-01",
-            modifiedAt = "2011-01-01",
-            name = "이건 저희 동아리 양식 제목입니다",
-            meetingId = 1L,
-        )
+    @Log
+    override fun findById(id: Long): ParticipationFormData? {
 
-        participationFormData.addAllFields(
-            listOf(
-                ParticipationFormFieldData(
-                    id = 11L,
-                    name = "1번 필드"
-                ),
-
-                ParticipationFormFieldData(
-                    id = 22L,
-                    name = "2번 필드"
-                ),
-
-                ParticipationFormFieldData(
-                    id = 33L,
-                    name = "3번 필드"
-                ),
-
-                ParticipationFormFieldData(
-                    id = 44L,
-                    name = "4번 필드"
-                ),
+        val participationFormData = query.select(
+            QParticipationFormData(
+                participationForm.id,
+                participationForm.createdAt.stringValue(),
+                participationForm.modifiedAt.stringValue(),
+                participationForm.name,
+                participationForm.meetingId,
             )
         )
+            .from(participationForm)
+            .where(
+                participationForm.id.eq(id)
+            )
+            .fetchOne()
+        // 만약 가입 신청서가 없는 경우 존재하지 않음을 표시하는 데이터를 반환하고 종료
+            ?: return null
+
+        val applyFormFieldDatas = query.select(
+            QParticipationFormFieldData(
+                participationFormField.id,
+                participationFormField.name
+            )
+        )
+            .from(participationFormField)
+            .where(participationFormField.participationForm.id.eq(participationFormData.id))
+
+            // 기본이 오름차순이지만 확실히 하기 위해, 순서를 지정하지 않으면 엑셀 필드 매치가 되지 않아 오류가 발생할 수 있다.
+            .orderBy(participationFormField.id.asc())
+            .fetch()
+
+        participationFormData.addAllFields(applyFormFieldDatas)
+
         return participationFormData
-        //TODO 이거 꼭 고쳐
     }
 
 }

@@ -10,7 +10,7 @@ interface ParticipationFormDataDao {
     /**
      * 현재 사용중인 가입 신청서를 가져오는 함수
      */
-    fun findUsedParticipationFormByMeetingId(meetingId: Long): ParticipationFormData
+    fun findUsedParticipationFormByMeetingId(meetingId: Long): ParticipationFormData?
 
-    fun findById(id: Long): ParticipationFormData
+    fun findById(id: Long): ParticipationFormData?
 }
