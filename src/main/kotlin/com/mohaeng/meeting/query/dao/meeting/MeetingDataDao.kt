@@ -7,5 +7,5 @@ import com.mohaeng.meeting.query.data.meeting.MeetingData
  */
 interface MeetingDataDao {
 
-    fun findById(id: Long): MeetingData
+    fun findById(meetingId: Long): MeetingData
 }
