@@ -16,7 +16,7 @@ class WrittenParticipationForm(
 
     private val memberId: Long, // 해당 양식을 작성한 회원 ID (* 참여자 ID가 아닌 회원 ID임에 주의 *)
 
-    private val participationId: Long, // 해당 작성된 신청서는 어느 신청양식을 작성한 것인지
+    private val participationFormId: Long, // 해당 작성된 신청서는 어느 신청양식을 작성한 것인지
 
     @OneToMany(mappedBy = "writtenParticipationForm", orphanRemoval = true, cascade = [ALL])
     private val writtenParticipationFormFields: MutableList<WrittenParticipationFormField> = mutableListOf(),

@@ -10,5 +10,5 @@ interface WrittenParticipationFormDataDao {
     /**
      * 어떠한 가입신청서 양식에 해당하는 작성된 신청서들 모두 조회
      */
-    fun getAllByParticipationFormId(meetingId: Long): List<WrittenParticipationFormData>
+    fun getAllByParticipationFormId(participationFormId: Long): List<WrittenParticipationFormData>
 }

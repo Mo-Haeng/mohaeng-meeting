@@ -30,7 +30,9 @@ data class WrittenParticipationFormFieldData
 @QueryProjection constructor(
     val id: Long,
 
-    val participationFormFieldId: Long,
+    val writtenParticipationFormId: Long, // 작성된 신청서 Id
+
+    val participationFormFieldId: Long, // 양식의 어떤 필드에 대응되는 값인지
 
     val content: String, // 작성된 내용
 ) {
