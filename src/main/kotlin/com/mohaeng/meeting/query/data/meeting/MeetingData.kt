@@ -15,8 +15,6 @@ data class MeetingData @QueryProjection constructor(
 
     val capacity: Int, // 모임 최대 인원
 
-    // 현재 가입한 회원 수는 모임 노출 서비스에서 구현
-
     val createdAt: String, // 생성 시간
 
     val modifiedAt: String, // 최종 수정 시간
@@ -28,4 +26,6 @@ data class MeetingData @QueryProjection constructor(
     val representativeNickname: String, // 모임에서 사용할 별명
 
 ) {
+
+    var numberOfParticipants: Int = 0 // 현재 가입한 회원 수
 }

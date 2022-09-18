@@ -3,6 +3,7 @@ package com.mohaeng.meeting.presentation
 import com.mohaeng.meeting.infrastructure.log.Log
 import com.mohaeng.meeting.query.dao.participationform.ParticipationFormDataDao
 import com.mohaeng.meeting.query.data.participationform.ParticipationFormData
+import com.mohaeng.meeting.query.exception.NotFoundParticipationFormException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,6 +27,11 @@ class InquireParticipationFormRestController(
     @GetMapping("/api/meeting/{meetingId}/participation-form")
     fun inquireUsedApplyFormByMeetingId(
         @PathVariable(name = "meetingId") meetingId: Long,
-    ): ResponseEntity<ParticipationFormData> =
-        ResponseEntity.ok(participationFormDataDao.findUsedParticipationFormByMeetingId(meetingId))
+    ): ResponseEntity<ParticipationFormData> {
+
+        return ResponseEntity.ok(
+            participationFormDataDao.findUsedParticipationFormByMeetingId(meetingId)
+                ?: throw NotFoundParticipationFormException()
+        )
+    }
 }

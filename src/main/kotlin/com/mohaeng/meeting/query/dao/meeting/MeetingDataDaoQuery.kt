@@ -1,6 +1,8 @@
 package com.mohaeng.meeting.query.dao.meeting
 
 import com.mohaeng.meeting.domain.meeting.QMeeting.meeting
+import com.mohaeng.meeting.domain.meetingrole.QMeetingRole.meetingRole
+import com.mohaeng.meeting.domain.meetingrole.enums.MeetingAuthority.REPRESENTATIVE
 import com.mohaeng.meeting.domain.participant.QParticipant.participant
 import com.mohaeng.meeting.infrastructure.log.Log
 import com.mohaeng.meeting.query.data.meeting.MeetingData
@@ -21,25 +23,68 @@ class MeetingDataDaoQuery(
 ) : MeetingDataDao {
 
     @Log
-    override fun findById(id: Long): MeetingData {
-        return query.select(
-            QMeetingData(
-                meeting.id,
-                meeting.name,
-                meeting.description,
-                meeting.capacity,
-                meeting.createdAt.stringValue(),
-                meeting.modifiedAt.stringValue(),
+    override fun findById(meetingId: Long): MeetingData {
 
-                participant.id,
-                participant.memberId,
-                participant.nickname
+        // 미팅의 대표 역할 ID 찾기 (없는 경우 모임이 없는 것과 동일)
+        val meetingRepresentativeId = findMeetingRepresentativeRoleId(meetingId)
+
+        val meetingData =
+            query.select(
+                QMeetingData(
+                    meeting.id,
+                    meeting.name,
+                    meeting.description,
+                    meeting.capacity,
+                    meeting.createdAt.stringValue(),
+                    meeting.modifiedAt.stringValue(),
+                    participant.id, // 대표 참가자 id
+                    participant.memberId,
+                    participant.nickname
+                )
             )
-        )
-            .from(meeting)
-            .leftJoin(participant)
-            .on(participant.meetingId.eq(id)) // join 조건 필터링 (from절 세타조인 사용하면 cross join 발생함)
-            .where(meeting.id.eq(id))
+                .from(meeting)
+                .innerJoin(participant)
+                .on( // join 조건 필터링 (from절 세타조인 사용하면 cross join 발생함)
+                    participant.meetingId.eq(meetingId)
+                        .and(participant.meetingRoleId.eq(meetingRepresentativeId))
+                )
+                .where(meeting.id.eq(meetingId))
+                .fetchOne()
+                ?: throw NotFoundMeetingException()
+
+
+        // 참여중인 회원 수 조회
+        val numberOfParticipants = getParticipationCount(meetingId)
+
+        meetingData.numberOfParticipants = numberOfParticipants
+
+        return meetingData
+    }
+
+    /**
+     * 참여중인 회원 수 조회
+     */
+    private fun getParticipationCount(meetingId: Long): Int {
+
+        val numberOfParticipants = query
+            .select(participant.count())
+            .from(participant)
+            .where(participant.meetingId.eq(meetingId))
+            .fetchOne()
+            ?: 0
+        return numberOfParticipants.toInt()
+    }
+
+    /**
+     * 모임의 대표 역할 id 조회
+     */
+    private fun findMeetingRepresentativeRoleId(id: Long): Long {
+        return query.select(meetingRole.id)
+            .from(meetingRole)
+            .where(
+                meetingRole.authority.eq(REPRESENTATIVE)
+                    .and(meetingRole.meetingId.eq(id))
+            )
             .fetchOne()
             ?: throw NotFoundMeetingException()
     }
