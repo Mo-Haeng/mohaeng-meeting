@@ -20,7 +20,7 @@ data class SaveWrittenParticipationFormDto(
 
         val writtenParticipationForm = WrittenParticipationForm(
             memberId = memberId,
-            participationId = participationFormId,
+            participationFormId = participationFormId,
         )
 
         writtenParticipationForm.addAll(writtenParticipationFormFields.map { it.toEntity(writtenParticipationForm) })

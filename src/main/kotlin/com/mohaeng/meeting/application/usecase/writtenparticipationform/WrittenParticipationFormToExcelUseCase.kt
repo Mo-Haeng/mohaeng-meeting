@@ -14,6 +14,6 @@ interface WrittenParticipationFormToExcelUseCase {
     fun command(
         os: OutputStream,
         participationFormData: ParticipationFormData,
-        writtenParticipationFormData: List<WrittenParticipationFormData>,
+        writtenParticipationFormDatas: List<WrittenParticipationFormData>,
     )
 }

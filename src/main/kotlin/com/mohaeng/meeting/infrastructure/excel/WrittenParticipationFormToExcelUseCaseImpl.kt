@@ -1,6 +1,7 @@
 package com.mohaeng.meeting.infrastructure.excel
 
 import com.mohaeng.meeting.application.usecase.writtenparticipationform.WrittenParticipationFormToExcelUseCase
+import com.mohaeng.meeting.infrastructure.log.Log
 import com.mohaeng.meeting.query.data.participationform.ParticipationFormData
 import com.mohaeng.meeting.query.data.writtenparticipationform.WrittenParticipationFormData
 import org.dhatim.fastexcel.Workbook
@@ -13,10 +14,11 @@ import java.io.OutputStream
 @Service
 class WrittenParticipationFormToExcelUseCaseImpl : WrittenParticipationFormToExcelUseCase {
 
+    @Log
     override fun command(
         os: OutputStream,
         participationFormData: ParticipationFormData,
-        writtenParticipationFormData: List<WrittenParticipationFormData>,
+        writtenParticipationFormDatas: List<WrittenParticipationFormData>,
     ) {
 
         // 엑셀 파일 생성
@@ -32,7 +34,8 @@ class WrittenParticipationFormToExcelUseCaseImpl : WrittenParticipationFormToExc
 
         // 작성된 내용 엑셀에 한줄씩 변환
         var row = 1 // row 번호
-        for (writtenApplyForm in writtenParticipationFormData.withIndex()) {
+        for (writtenApplyForm in writtenParticipationFormDatas.withIndex()) {
+
             // 작성된 양식의 모든 필드 내용 작성
             writtenApplyForm.value.fields.withIndex().forEach {
                 worksheet.value(row, it.index, it.value.content)

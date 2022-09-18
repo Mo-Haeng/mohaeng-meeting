@@ -30,7 +30,7 @@ class SaveWrittenParticipationFormUseCase(
         // 작성해야 할 가입 신청서와, 요청으로 보낸 가입 신청서 검사
         validateWrittenParticipationForm(
             meetingId = meetingId,
-            saveWrittenParticipationFormDto = saveWrittenFormDto,
+            writtenForm = saveWrittenFormDto,
         )
 
         // 가입 신청서를 받는 모임인 경우 저
@@ -45,22 +45,30 @@ class SaveWrittenParticipationFormUseCase(
      */
     private fun validateWrittenParticipationForm(
         meetingId: Long,
-        saveWrittenParticipationFormDto: SaveWrittenParticipationFormDto?,
+        writtenForm: SaveWrittenParticipationFormDto?,
     ) {
 
         // 모임의 사용중인 가입 신청서 양식 조회
-        val participationFormData = participationFormDataDao.findUsedParticipationFormByMeetingId(meetingId)
+        val participationForm =
+            participationFormDataDao.findUsedParticipationFormByMeetingId(meetingId)
 
-        // 사용중인 가입 신청서 양식이 존재하지 않는 경우 저장을 시도하지 않고 반환
-        if (!participationFormData.isExist) return
 
-        // 작성된 가입 신청서가 없거나, 양식이 일치하지 않는다면 예외
-        if (saveWrittenParticipationFormDto == null
-            || participationFormData.id != saveWrittenParticipationFormDto.participationFormId
+        // 사용중인 가입 신청서가 없는 경우, 작성된 가입 신청서가 없다면 정상이므로 반환
+        if (participationForm == null && writtenForm == null) {
+            return
+        }
+
+        /*
+            사용중인 가입 신청서가 없는 경우, 작성된 가입 신청서가 있다면 예외
+            사용중인 가입 신청서가 있을 때, 작성된 가입 신청서가 없거나, 양식이 일치하지 않는다면 예외
+         */
+        if ( (participationForm == null && writtenForm != null)
+            || writtenForm == null
+            || writtenForm.participationFormId != participationForm!!.id
         ) throw NotMatchParticipationFormException()
 
         // 작성해야할 모든 필드를 작성한 건지 검사
-        validateFields(saveWrittenParticipationFormDto, participationFormData)
+        validateFields(writtenForm, participationForm)
     }
 
     /**

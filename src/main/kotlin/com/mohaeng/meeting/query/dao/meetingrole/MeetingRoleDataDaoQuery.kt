@@ -36,10 +36,12 @@ class MeetingRoleDataDaoQuery(
             ?: throw NotFoundDefaultRole()
     }
 
+    @Log
     override fun findAllRolesByMeetingId(meetingId: Long): List<MeetingRoleData> {
         TODO("Not yet implemented")
     }
 
+    @Log
     override fun findByMemberIdAndMeetingId(memberId: Long, meetingId: Long): MeetingRoleData {
 
         return query.select(

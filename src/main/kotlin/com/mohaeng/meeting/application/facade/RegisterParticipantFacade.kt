@@ -1,6 +1,6 @@
 package com.mohaeng.meeting.application.facade
 
-import com.mohaeng.meeting.application.facade.exception.NoAuthorityAcceptParticipationRequest
+import com.mohaeng.meeting.application.facade.exception.NoAuthorityAcceptParticipationRequestException
 import com.mohaeng.meeting.application.usecase.participant.RegisterParticipantUseCase
 import com.mohaeng.meeting.application.usecase.participant.dto.CreateParticipantDto
 import com.mohaeng.meeting.application.usecase.participant.dto.SaveWrittenParticipationFormDto
@@ -85,11 +85,6 @@ class RegisterParticipantFacade(
             meetingId = meetingId
         )
 
-        when (meetingRole.authority) {
-            // 매니저 이상의 등급이면 권한이 있음
-            MeetingAuthority.REPRESENTATIVE -> return
-            MeetingAuthority.MANAGER -> return
-            MeetingAuthority.BASIC -> throw NoAuthorityAcceptParticipationRequest()
-        }
+        if (!meetingRole.authority.isMoreThanManager()) throw NoAuthorityAcceptParticipationRequestException()
     }
 }

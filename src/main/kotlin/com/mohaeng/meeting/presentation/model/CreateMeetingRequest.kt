@@ -53,19 +53,19 @@ class CreateMeetingRequest(
 data class CreateParticipationFormRequest(
 
     // 모임의 가입 신청서 이름
-    val applyFormName: String,
+    val participationFormName: String,
 
     // 모임 가입 시 작성해야 할 정보 이름들
-    val applyFormFields: List<ApplyFormFieldRequest> = mutableListOf(),
+    val participationFormFields: List<ParticipationFormFieldRequest> = mutableListOf(),
 ) {
 
     fun toServiceDto(): CreateParticipationFormDto? {
 
         // 양식의 이름이 빈칸이 아니면서, 필드가 1개 이상 존재하는 경우에만 생성
-        return if (applyFormName.isNotBlank() && applyFormFields.isNotEmpty()) {
+        return if (participationFormName.isNotBlank() && participationFormFields.isNotEmpty()) {
             CreateParticipationFormDto(
-                participationFormName = applyFormName,
-                participationFormFields = applyFormFields.map { it.toServiceDto() }
+                participationFormName = participationFormName,
+                participationFormFields = participationFormFields.map { it.toServiceDto() }
             )
         }
         else null
@@ -76,7 +76,7 @@ data class CreateParticipationFormRequest(
 /**
  *  모임에 가입할 때 제출해야할 가입 신청서 양식의 필드명들
  */
-data class ApplyFormFieldRequest(
+data class ParticipationFormFieldRequest(
     @field:NotBlank val name: String,
 ) {
 
