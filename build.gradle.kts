@@ -36,7 +36,11 @@ noArg {
 dependencies {
 
 	// Eureka Client
-	//implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
+	// Excel
+	implementation("org.dhatim:fastexcel:0.12.3")
+	implementation("org.dhatim:fastexcel-reader:0.12.3")
 
 	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")

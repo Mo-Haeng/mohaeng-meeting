@@ -6,6 +6,6 @@ import com.mohaeng.meeting.configuration.exception.ExceptionResponse
  * Created by ShinD on 2022/09/08.
  */
 class FeignClientException(
-    val exceptionResponse: ExceptionResponse
-) : RuntimeException(){
+    val exceptionResponse: ExceptionResponse,
+) : RuntimeException() {
 }

@@ -1,8 +1,8 @@
 package com.mohaeng.meeting.application.facade
 
-import com.mohaeng.meeting.application.usecase.applyform.CreateApplyFormUseCase
+import com.mohaeng.meeting.application.usecase.participationform.CreateParticipationFormUseCase
 import com.mohaeng.meeting.application.usecase.meeting.CreateMeetingUseCase
-import com.mohaeng.meeting.application.usecase.meeting.dto.CreateApplyFormDto
+import com.mohaeng.meeting.application.usecase.meeting.dto.CreateParticipationFormDto
 import com.mohaeng.meeting.application.usecase.meeting.dto.CreateMeetingDto
 import com.mohaeng.meeting.application.usecase.meetingrole.CreateDefaultMeetingRoleUseCase
 import com.mohaeng.meeting.application.usecase.participant.RegisterParticipantUseCase
@@ -24,7 +24,7 @@ class CreateMeetingFacade(
 
     private val registerParticipantUseCase: RegisterParticipantUseCase,
 
-    private val createApplyFormUseCase: CreateApplyFormUseCase,
+    private val createParticipationFormUseCase: CreateParticipationFormUseCase,
 
     private val eventProducer: EventProducer,
 
@@ -34,19 +34,18 @@ class CreateMeetingFacade(
     @Log
     fun create(
         createMeetingDto: CreateMeetingDto,
-        createApplyFormDto: CreateApplyFormDto?,
+        createParticipationFormDto: CreateParticipationFormDto?,
         createParticipantDto: CreateParticipantDto,
     ): Long {
 
-
         val meetingId = transaction.execute {
 
-            // 미팅 저장
+            // 모임 생성
             val meetingId = createMeetingUseCase.command(createMeetingDto)
 
             // 모임의 대표 역할과 일반 회원 역할 설정
-            val representativeRoleId = createDefaultMeetingRoleUseCase
-                .createAndReturnRepresentativeRoleId(meetingId)
+            val representativeRoleId =
+                createDefaultMeetingRoleUseCase.createAndReturnRepresentativeRoleId(meetingId)
 
             // 신청 회원을 모임 참가자(대표)로 설정
             registerParticipantUseCase.command(
@@ -56,16 +55,13 @@ class CreateMeetingFacade(
             )
 
             // 가입 신청서 양식이 존재하는 경우 저장
-            createApplyFormDto?.let {
-                createApplyFormUseCase.command(
-                    createApplyFormDto = it,
-                    meetingId = meetingId
-                )
-            }
+            createParticipationFormUseCase.command(
+                createFormDto = createParticipationFormDto,
+                meetingId = meetingId
+            )
 
             meetingId // return
         }
-
 
         checkNotNull(meetingId) { "meeting id is null" }
 

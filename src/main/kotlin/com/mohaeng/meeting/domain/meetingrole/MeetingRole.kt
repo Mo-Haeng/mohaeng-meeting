@@ -13,7 +13,8 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "MEETING_ROLE")
-class MeetingRole( // 모임 별로 정한 역할
+class MeetingRole(
+    // 모임 별로 정한 역할
 
     val name: String, // 역할의 이름 (ex: 회장)
 
@@ -33,7 +34,13 @@ class MeetingRole( // 모임 별로 정한 역할
         // Default Role 정의
         fun representativeRole(meetingId: Long) =
             MeetingRole(name = "대표", authority = MeetingAuthority.REPRESENTATIVE, meetingId = meetingId)
+
         fun basicRole(meetingId: Long) =
-           MeetingRole(name = "일반", authority = MeetingAuthority.BASIC, meetingId = meetingId, isParticipantDefault = true) // 기본 옵션
+            MeetingRole(
+                name = "일반",
+                authority = MeetingAuthority.BASIC,
+                meetingId = meetingId,
+                isParticipantDefault = true
+            ) // 기본 옵션
     }
 }

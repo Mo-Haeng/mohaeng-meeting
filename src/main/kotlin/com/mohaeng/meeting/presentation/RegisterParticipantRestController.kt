@@ -32,7 +32,7 @@ class RegisterParticipantRestController(
         val participantId = registerParticipantFacade.command(
             accepter = accepter,
             createParticipantDto = registerParticipantRequest.toServiceParticipantDto(),
-            saveWrittenApplyFormDto = registerParticipantRequest.toServiceWrittenApplyFormDto(),
+            saveWrittenParticipationFormDto = registerParticipantRequest.toServiceWrittenApplyFormDto(),
             meetingId = meetingId
         )
 

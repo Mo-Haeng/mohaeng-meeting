@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration
 @EnableConfigurationProperties(JwtProperties::class)
 class JwtConfiguration {
 
-
     companion object {
 
         const val AUTH_TOKEN_SUBJECT = "AuthToken"
