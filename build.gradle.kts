@@ -38,6 +38,9 @@ dependencies {
 	// Eureka Client
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
+	// Kafka
+	implementation("org.springframework.kafka:spring-kafka")
+
 	// Excel
 	implementation("org.dhatim:fastexcel:0.12.3")
 	implementation("org.dhatim:fastexcel-reader:0.12.3")
