@@ -7,6 +7,8 @@ import com.mohaeng.meeting.application.usecase.meeting.dto.CreateMeetingDto
 import com.mohaeng.meeting.application.usecase.meetingrole.CreateDefaultMeetingRoleUseCase
 import com.mohaeng.meeting.application.usecase.participant.RegisterParticipantUseCase
 import com.mohaeng.meeting.application.usecase.participant.dto.CreateParticipantDto
+import com.mohaeng.meeting.domain.meeting.enums.MeetingEvent
+import com.mohaeng.meeting.domain.meeting.enums.MeetingEvent.CREATE
 import com.mohaeng.meeting.infrastructure.eventproducer.EventProducer
 import com.mohaeng.meeting.infrastructure.log.Log
 import org.springframework.stereotype.Service
@@ -67,7 +69,7 @@ class CreateMeetingFacade(
 
         // 이벤트 전송
         eventProducer.send(
-            event = "create meeting event",
+            event = CREATE,
             targetId = meetingId
         )
 
