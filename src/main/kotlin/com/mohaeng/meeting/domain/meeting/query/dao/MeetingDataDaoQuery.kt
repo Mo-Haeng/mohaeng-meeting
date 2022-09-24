@@ -34,6 +34,7 @@ class MeetingDataDaoQuery(
                     meeting.id,
                     meeting.name,
                     meeting.description,
+                    meeting.mainImagePath,
                     meeting.capacity,
                     meeting.createdAt.stringValue(),
                     meeting.modifiedAt.stringValue(),

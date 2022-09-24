@@ -14,6 +14,8 @@ class Meeting(
 
     private val name: String, // 모임의 이름
 
+    private val mainImagePath: String? = null,
+
     @Lob
     private val description: String, // 모임 설명
 

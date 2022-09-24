@@ -11,6 +11,8 @@ data class CreateMeetingDto(
 
     val description: String,
 
+    val mainImagePath: String? = null,
+
     val capacity: Int,
 ) {
 
@@ -18,6 +20,7 @@ data class CreateMeetingDto(
         // 모임 반환
         return Meeting(
             name = name,
+            mainImagePath = mainImagePath,
             description = description,
             capacity = capacity,
         )

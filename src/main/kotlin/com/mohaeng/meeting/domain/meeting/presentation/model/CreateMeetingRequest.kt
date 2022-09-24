@@ -19,6 +19,9 @@ class CreateMeetingRequest(
     // 모임의 설명
     @field:NotBlank val description: String,
 
+    // 모임의 사진
+    val mainImagePath: String,
+
     // 모임 최대 인원
     val capacity: Int = -1, //제한 없음 설정시 -1
 
@@ -34,6 +37,7 @@ class CreateMeetingRequest(
         CreateMeetingDto(
             name = name,
             description = description,
+            mainImagePath = mainImagePath.ifBlank { null },
             capacity = if (capacity <= 0) Int.MAX_VALUE else capacity,
         )
 
