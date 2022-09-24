@@ -1,5 +1,6 @@
 package com.mohaeng.meeting.domain.participant.query.data
 
+import com.mohaeng.meeting.domain.meetingrole.domain.enums.MeetingAuthority
 import com.mohaeng.meeting.domain.meetingrole.query.data.MeetingRoleData
 import com.querydsl.core.annotations.QueryProjection
 
@@ -18,7 +19,13 @@ class ParticipantData @QueryProjection constructor(
 
     val meetingId: Long, // 모임 ID
 
-    val meetingRoleData: MeetingRoleData, // 모임의 역할 정보
+    val roleId: Long, // 역할의 id
+
+    val roleName: String, // 역할의 이름
+
+    val roleAuthority: MeetingAuthority, // 역할의 권한
 
 ){
+
+
 }
