@@ -1,6 +1,6 @@
 package com.mohaeng.meeting.domain.jwt
 
-import com.mohaeng.meeting.presentation.model.AuthMember
+import com.mohaeng.meeting.domain.meeting.presentation.model.AuthMember
 
 /**
  * Created by ShinD on 2022/09/08.
