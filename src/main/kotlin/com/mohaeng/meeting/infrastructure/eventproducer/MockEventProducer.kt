@@ -1,8 +1,8 @@
 package com.mohaeng.meeting.infrastructure.eventproducer
 
-import com.mohaeng.meeting.configuration.event.Event
-import com.mohaeng.meeting.infrastructure.log.Log
-import org.springframework.stereotype.Service
+import com.mohaeng.meeting.global.aop.log.Log
+import com.mohaeng.meeting.global.configuration.event.Event
+import com.mohaeng.meeting.global.eventproducer.EventProducer
 
 /**
  * Created by ShinD on 2022/09/07.

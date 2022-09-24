@@ -2,14 +2,14 @@ package com.mohaeng.meeting.infrastructure.jwt
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.mohaeng.meeting.configuration.jwt.JwtConfiguration.Companion.MEMBER_ID_CLAIM
-import com.mohaeng.meeting.configuration.jwt.JwtConfiguration.Companion.MEMBER_ROLE_CLAIM
 import com.mohaeng.meeting.domain.jwt.AuthMemberProvider
 import com.mohaeng.meeting.domain.jwt.AuthToken
-import com.mohaeng.meeting.infrastructure.jwt.properties.JwtProperties
-import com.mohaeng.meeting.infrastructure.log.Log
-import com.mohaeng.meeting.presentation.model.AuthMember
-import com.mohaeng.meeting.presentation.model.Role
+import com.mohaeng.meeting.domain.meeting.presentation.model.AuthMember
+import com.mohaeng.meeting.domain.meeting.presentation.model.Role
+import com.mohaeng.meeting.global.aop.log.Log
+import com.mohaeng.meeting.global.configuration.jwt.JwtConfiguration.Companion.MEMBER_ID_CLAIM
+import com.mohaeng.meeting.global.configuration.jwt.JwtConfiguration.Companion.MEMBER_ROLE_CLAIM
+import com.mohaeng.meeting.global.configuration.jwt.properties.JwtProperties
 
 /**
  * Created by ShinD on 2022/09/08.

@@ -1,8 +1,8 @@
 package com.mohaeng.meeting.infrastructure.eventproducer.kafka
 
-import com.mohaeng.meeting.configuration.event.Event
-import com.mohaeng.meeting.infrastructure.eventproducer.EventProducer
-import com.mohaeng.meeting.infrastructure.log.Log
+import com.mohaeng.meeting.global.aop.log.Log
+import com.mohaeng.meeting.global.configuration.event.Event
+import com.mohaeng.meeting.global.eventproducer.EventProducer
 import mu.KotlinLogging
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
@@ -15,7 +15,7 @@ class KafkaProducer(
 
     private val kafkaTemplate: KafkaTemplate<String, String>
 
-) : EventProducer{
+) : EventProducer {
 
     private val log = KotlinLogging.logger {  }
 
