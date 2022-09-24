@@ -7,7 +7,9 @@ import com.mohaeng.meeting.domain.participant.usecase.RegisterParticipantUseCase
 import com.mohaeng.meeting.domain.participant.usecase.dto.CreateParticipantDto
 import com.mohaeng.meeting.domain.participant.usecase.dto.SaveWrittenParticipationFormDto
 import com.mohaeng.meeting.domain.writtenparticipationform.usecase.SaveWrittenParticipationFormUseCase
+import com.mohaeng.meeting.global.aop.event.ProduceEvent
 import com.mohaeng.meeting.global.aop.log.Log
+import com.mohaeng.meeting.global.event.Event
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 
@@ -34,6 +36,7 @@ class RegisterParticipantFacade(
      * meeting의 기본 역할로 참가시키기
      */
     @Log
+    @ProduceEvent(event = Event.CREATE_PARTICIPANT_EVENT)
     fun command(
         accepter: AuthMember,
         createParticipantDto: CreateParticipantDto,     // 참가하는 회원의 모임에서의 프로필 저장시 필요
@@ -51,7 +54,7 @@ class RegisterParticipantFacade(
         val defaultRoleId = meetingRoleDataDao.findDefaultRoleIdByMeetingId(meetingId)
 
         // 트랜잭션 시작
-        return transaction.execute {
+        val participantId = transaction.execute {
 
             // 회원 저장하기
             val participantId = registerParticipantUseCase.command(
@@ -68,6 +71,8 @@ class RegisterParticipantFacade(
 
             participantId // return
         }!!
+
+        return participantId
     }
 
 

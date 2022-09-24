@@ -40,7 +40,8 @@ class MeetingDataDaoQuery(
                     meeting.modifiedAt.stringValue(),
                     participant.id, // 대표 참가자 id
                     participant.memberId,
-                    participant.nickname
+                    participant.nickname,
+                    meeting.numberOfParticipants,
                 )
             )
                 .from(meeting)
@@ -55,26 +56,10 @@ class MeetingDataDaoQuery(
 
 
         // 참여중인 회원 수 조회
-        val numberOfParticipants = getParticipationCount(meetingId)
-
-        meetingData.numberOfParticipants = numberOfParticipants
 
         return meetingData
     }
 
-    /**
-     * 참여중인 회원 수 조회
-     */
-    private fun getParticipationCount(meetingId: Long): Int {
-
-        val numberOfParticipants = query
-            .select(participant.count())
-            .from(participant)
-            .where(participant.meetingId.eq(meetingId))
-            .fetchOne()
-            ?: 0
-        return numberOfParticipants.toInt()
-    }
 
     /**
      * 모임의 대표 역할 id 조회

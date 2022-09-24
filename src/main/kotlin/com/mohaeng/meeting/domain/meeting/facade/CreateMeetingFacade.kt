@@ -1,6 +1,5 @@
 package com.mohaeng.meeting.domain.meeting.facade
 
-import com.mohaeng.meeting.domain.meeting.domain.enums.MeetingEvent.CREATE
 import com.mohaeng.meeting.domain.meeting.usecase.CreateMeetingUseCase
 import com.mohaeng.meeting.domain.meeting.usecase.dto.CreateMeetingDto
 import com.mohaeng.meeting.domain.meeting.usecase.dto.CreateParticipationFormDto
@@ -8,8 +7,9 @@ import com.mohaeng.meeting.domain.meetingrole.usecase.CreateDefaultMeetingRoleUs
 import com.mohaeng.meeting.domain.participant.usecase.RegisterParticipantUseCase
 import com.mohaeng.meeting.domain.participant.usecase.dto.CreateParticipantDto
 import com.mohaeng.meeting.domain.participationform.usecase.CreateParticipationFormUseCase
+import com.mohaeng.meeting.global.aop.event.ProduceEvent
 import com.mohaeng.meeting.global.aop.log.Log
-import com.mohaeng.meeting.global.eventproducer.EventProducer
+import com.mohaeng.meeting.global.event.Event.Companion.CREATE_MEETING_EVENT
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 
@@ -27,12 +27,11 @@ class CreateMeetingFacade(
 
     private val createParticipationFormUseCase: CreateParticipationFormUseCase,
 
-    private val eventProducer: EventProducer,
-
     private val transaction: TransactionTemplate,
 ) {
 
     @Log
+    @ProduceEvent(event = CREATE_MEETING_EVENT)
     fun create(
         createMeetingDto: CreateMeetingDto,
         createParticipationFormDto: CreateParticipationFormDto?,
@@ -65,12 +64,6 @@ class CreateMeetingFacade(
         }
 
         checkNotNull(meetingId) { "meeting id is null" }
-
-        // 이벤트 전송
-        eventProducer.send(
-            event = CREATE,
-            targetId = meetingId
-        )
 
         return meetingId
     }
