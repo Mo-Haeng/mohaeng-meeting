@@ -27,7 +27,7 @@ data class MeetingData @QueryProjection constructor(
 
     val representativeNickname: String, // 대표의 모임 내 별명
 
+    var numberOfParticipants: Int, // 현재 가입한 회원 수
 ) {
 
-    var numberOfParticipants: Int = 0 // 현재 가입한 회원 수
 }
